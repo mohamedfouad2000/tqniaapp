@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/local/cache_Helper.dart';
@@ -40,6 +41,7 @@ class UserDataCubit extends Cubit<UserDataState> {
       USERID = usermodel.data!.user!.id;
       print(USERID);
       CacheHelper.saveData(key: 'userId', value: USERID).then((value) {
+        FirebaseMessaging.instance.subscribeToTopic('client$USERID');
         emit(GetUserDataSucc(usermodel));
       });
     });

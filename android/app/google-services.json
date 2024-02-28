@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1091379967672",
+    "project_id": "system-tqnia",
+    "storage_bucket": "system-tqnia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091379967672:android:7510e341e58d5d8078a64d",
+        "android_client_info": {
+          "package_name": "com.example.tqniaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD43I9jKGD0SVs3qD9W-NrHTgP-l2GI3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

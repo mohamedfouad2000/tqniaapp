@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
@@ -21,6 +22,7 @@ import 'package:tqniaapp/Feature/home/data/repo/metting%20repo/metting_repo_imp.
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_state.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/widgets/add_meeting_form.dart';
 
 class EditMettingScreen extends StatefulWidget {
   const EditMettingScreen({
@@ -46,12 +48,13 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
   String? endTime;
   Color? colorvalue;
   bool isEmpty = false;
+  bool fillList = false;
   List<String> sList = [];
   Color? colorChoose = Colors.black;
   Future<void> getclient() async {
     String? x = widget.model.shareWith;
     if (x != null) {
-      while (x != null) {
+      while (x!.length>1) {
         String y = x.split(',').first;
         print(y);
         print(x);
@@ -80,6 +83,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
     endTime = widget.model.endTime ?? '';
     enddate = widget.model.endDate ?? '';
     StartTime = widget.model.startTime ?? '';
+
     print(sList.length);
     print(widget.model.shareWith);
   }
@@ -127,17 +131,18 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
             if (state is getAllClientsSucc) {
               print(sList);
               if (sList.isNotEmpty) {
-                state.Model.data?.forEach((element) {
-                  for (var e in sList) {
-                    print('${element.name} ${e.trim()}');
-                    if (element.id == e.trim()) {
-                      print("//////////////////");
-                      list2!.add(element);
-                      print(list2!.length);
+                if (!fillList) {
+                  fillList = true;
+        
+                  state.Model.data?.forEach((element) {
+                    for (var e in sList) {
+                      if (element.id == e.trim()) {
+                        list2!.add(element);
+                      }
                     }
-                  }
-                  // print(list2?.first);
-                });
+                    // print(list2?.first);
+                  });
+                }
               }
 
               return SingleChildScrollView(
@@ -192,7 +197,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        customTextFormedFiled(
+                        customTextFiled(
                           controller: labelcont,
                           hintText: 'Enter Label',
                         ),
@@ -240,10 +245,11 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                           children: [
                             InkWell(
                               onTap: () {
+                                list = list2!.toList();
+                                String? statusValue;
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      String? statusValue;
                                       return AlertDialog(
                                         surfaceTintColor: Colors.white,
                                         title: const Text(
@@ -258,81 +264,136 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  width: double.infinity,
+                                                SizedBox(
                                                   height: 55,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    top: 13.76,
-                                                    left: 17,
-                                                    right: 16.56,
-                                                    bottom: 13.24,
-                                                  ),
-                                                  clipBehavior: Clip.antiAlias,
-                                                  decoration: ShapeDecoration(
-                                                    color: Colors.white,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      side: const BorderSide(
-                                                          width: 1,
-                                                          color: Color(
-                                                              0xFFEAEAEA)),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                  ),
-                                                  child:
-                                                      DropdownButtonHideUnderline(
-                                                    child:
-                                                        DropdownButton<String>(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      value: statusValue,
-                                                      isDense: true,
-                                                      isExpanded: true,
-                                                      icon: Icon(
-                                                        Icons.arrow_downward,
-                                                        color: Colors.grey
-                                                            .withOpacity(.4),
-                                                      ),
-                                                      hint: Text(
-                                                        'Choose Person',
-                                                        style: StylesData.font14
-                                                            .copyWith(
-                                                                color: const Color(
-                                                                    0x330D223F)),
-                                                      ),
-                                                      style: StylesData.font14
+                                                  width: double.infinity,
+                                                  child: DropdownSearch<String>(
+                                                    dropdownDecoratorProps:
+                                                        DropDownDecoratorProps(
+                                                      baseStyle: StylesData
+                                                          .font14
                                                           .copyWith(
                                                               color:
                                                                   kMainColor),
-                                                      onChanged:
-                                                          (String? value) {
-                                                        // stateId =
-                                                        setState(() {
-                                                          print(value);
-                                                          statusValue =
-                                                              value.toString();
-                                                        });
-                                                      },
-                                                      items: state.Model.data!
-                                                          .map<
-                                                              DropdownMenuItem<
-                                                                  String>>((Datum?
-                                                              value) {
-                                                        return DropdownMenuItem<
-                                                            String>(
-                                                          value: value?.id
-                                                              .toString(),
-                                                          child: Text(value
-                                                                  ?.name
-                                                                  .toString() ??
-                                                              ''),
-                                                        );
-                                                      }).toList(),
+                                                      dropdownSearchDecoration:
+                                                          InputDecoration(
+                                                        suffixIconColor:
+                                                            Colors.grey[300],
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color:
+                                                                  kMainColor),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        border:
+                                                            const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFFEAEAEA)),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        enabledBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFFEAEAEA)),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
+                                                    popupProps: PopupProps.menu(
+                                                        showSearchBox: true,
+                                                        searchFieldProps:
+                                                            TextFieldProps(
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Choose Person",
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      width: 1,
+                                                                      color:
+                                                                          kMainColor),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    10),
+                                                              ),
+                                                            ),
+                                                            border:
+                                                                const OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFFEAEAEA)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    10),
+                                                              ),
+                                                            ),
+                                                            enabledBorder:
+                                                                const OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFFEAEAEA)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    10),
+                                                              ),
+                                                            ),
+                                                            // labelText: 'Password',
+                                                          ),
+                                                        )),
+                                                    itemAsString: (String u) {
+                                                      String x = '';
+                                                      state.Model.data
+                                                          ?.forEach((element) {
+                                                        if (u ==
+                                                            element.id
+                                                                .toString()) {
+                                                          x = element.name!;
+                                                        }
+                                                      });
+                                                      return x.toString();
+                                                    },
+                                                    onChanged: (i) {
+                                                      statusValue = i;
+                                                      print(
+                                                          'this is the namber Choose $statusValue');
+                                                    },
+                                                    items: [
+                                                      ...List.generate(
+                                                          state.Model.data
+                                                                  ?.length ??
+                                                              0,
+                                                          (index) => state.Model
+                                                              .data![index].id
+                                                              .toString()),
+                                                    ],
+                                                    enabled: true,
+                                                    selectedItem: statusValue,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -341,17 +402,21 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                                                 defaultButton(
                                                     height: 40,
                                                     fun: () {
+                                                      print(statusValue);
                                                       if (statusValue != null) {
                                                         for (var element
                                                             in state
                                                                 .Model.data!) {
                                                           if (element.id ==
                                                               statusValue) {
-                                                            list!.add(element);
                                                             setState(() {
+                                                              // list2!.add(element);
+                                                              list!
+                                                                  .add(element);
+
                                                               Navigator.pop(
-                                                                  context,
-                                                                  list2);
+                                                                context,
+                                                              );
                                                             });
                                                           }
                                                         }
@@ -389,6 +454,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                                     }).whenComplete(() {
                                   setState(() {
                                     list2 = {...list!};
+                                    list = list2!.toList();
                                   });
                                 });
                               },
@@ -412,46 +478,139 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                               width: 16,
                             ),
                             Expanded(
-                              child: SizedBox(
-                                height: 50,
-                                child: ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      list2!.elementAt(index);
-                                      return ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(1000000),
-                                        child: CachedNetworkImage(
-                                          height: 50,
-                                          width: 50,
-                                          imageUrl: list2!
-                                                      .elementAt(index)
-                                                      .image ==
-                                                  null
-                                              ? 'https://system.tqnia.me/assets/images/avatar.jpg'
-                                              : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
-                                          placeholder: (context, url) =>
-                                              LoadingAnimationWidget
-                                                  .newtonCradle(
-                                            size: 50,
-                                            color: Colors.grey,
-                                          ),
-                                          errorWidget: (context, url, er) =>
-                                              Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
+                              child: InkWell(
+                                onTap: () {
+                                  if (list2!.isNotEmpty) {
+                                    list = list2!.toList();
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            surfaceTintColor: Colors.white,
+                                            title: const Text(
+                                              "people in Mettings",
+                                            ),
+                                            content: StatefulBuilder(builder:
+                                                (BuildContext context,
+                                                    StateSetter setState) {
+                                              return Container(
+                                                height: 120,
+                                                color: Colors.white,
+                                                child: ListView.builder(
+                                                  itemCount: list2?.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      title: Text(list2!
+                                                          .elementAt(index)
+                                                          .name
+                                                          .toString()),
+                                                      trailing: IconButton(
+                                                          onPressed: () {
+                                                            print(list2);
+
+                                                            list2!.remove(list2!
+                                                                .elementAt(
+                                                                    index));
+                                                            // print(list2!.elementAt(index).name.toString());
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.delete)),
+                                                      leading: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    1000000),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          height: 24,
+                                                          width: 24,
+                                                          imageUrl: list2!
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .image ==
+                                                                  null
+                                                              ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                                              : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              LoadingAnimationWidget
+                                                                  .newtonCradle(
+                                                            size: 50,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, er) =>
+                                                              Container(
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            }),
+                                          );
+                                        }).whenComplete(() => setState(() {
+                                          list2;
+                                          list = list2!.toList();
+                                          list?.forEach((element) {
+                                            print('//////////////////////////');
+                                            print(element.name);
+                                          });
+                                        }));
+                                  }
+                                },
+                                child: SizedBox(
+                                  height: 50,
+                                  child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        list2!.elementAt(index);
+                                        return ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(1000000),
+                                          child: CachedNetworkImage(
+                                            height: 50,
+                                            width: 50,
+                                            imageUrl: list2!
+                                                        .elementAt(index)
+                                                        .image ==
+                                                    null
+                                                ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                                : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                                            placeholder: (context, url) =>
+                                                LoadingAnimationWidget
+                                                    .newtonCradle(
+                                              size: 50,
+                                              color: Colors.grey,
+                                            ),
+                                            errorWidget: (context, url, er) =>
+                                                Container(
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return const SizedBox(
-                                        width: 5,
-                                      );
-                                    },
-                                    itemCount: list2?.length ?? 0),
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return const SizedBox(
+                                          width: 5,
+                                        );
+                                      },
+                                      itemCount: list2?.length ?? 0),
+                                ),
                               ),
                             )
                           ],
@@ -481,63 +640,35 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                         ),
                         Row(
                           children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  colorChoose = const Color(0xFFFF0091);
-                                });
-                              },
-                              child: Container(
-                                width: 44,
+                            Expanded(
+                              child: SizedBox(
                                 height: 44,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFFFF0091),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  colorChoose =
-                                      const Color.fromARGB(255, 45, 0, 150);
-                                });
-                              },
-                              child: Container(
-                                width: 44,
-                                height: 44,
-                                decoration: ShapeDecoration(
-                                  color: const Color.fromARGB(255, 45, 0, 150),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  colorChoose =
-                                      const Color.fromARGB(255, 12, 139, 0);
-                                });
-                              },
-                              child: Container(
-                                width: 44,
-                                height: 44,
-                                decoration: ShapeDecoration(
-                                  color: const Color.fromARGB(255, 12, 139, 0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                                child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              colorChoose =
+                                                  colorHex(colorList[index]);
+                                            });
+                                          },
+                                          child: Container(
+                                            width: 44,
+                                            height: 44,
+                                            decoration: ShapeDecoration(
+                                              color: colorHex(colorList[index]),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                    itemCount: colorList.length),
                               ),
                             ),
                             const SizedBox(
@@ -680,6 +811,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                                           : '#9e9e9e',
                                       location: LocationCont.text,
                                       id: int.parse(widget.model.id!),
+                                      leadid: int.parse(widget.model.clientId.toString()),
                                       start_date: Startdate!,
                                       end_time: enddate!,
                                       startTime: StartTime ?? '01:00:00',

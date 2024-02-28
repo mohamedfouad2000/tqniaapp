@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tqniaapp/Core/constans/const.dart';
-import 'package:tqniaapp/Core/local/cache_Helper.dart';
-import 'package:tqniaapp/Core/utils/components.dart';
+
 import 'package:tqniaapp/Feature/home/data/repo/homerepo/home_repos_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/show%20leads/show_leads_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/show%20leads/show_leads_state.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/leads_widget.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/leed_full_widget.dart';
-import 'package:tqniaapp/Feature/login/presentation/views/login_view.dart';
 
 class HomeLeads extends StatelessWidget {
   const HomeLeads({super.key});
@@ -16,20 +13,13 @@ class HomeLeads extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShowLeadsCubit(HomeRepoImp())..getHomeLeads(),
+      create: (context) => ShowLeadsCubit(HomeRepoImp())
+        ..getHomeLeads(date: '', source: '', status: '', search: ''),
       child: BlocConsumer<ShowLeadsCubit, ShowLeadsState>(
         listener: (context, state) {
           {}
           if (state is ShowLeadsfailure) {
             print(state.errormsq.toString());
-
-            CacheHelper.removeData(key: 'token').then((value) {
-              CacheHelper.removeData(key: 'userId').then((value) {
-                TOKEN = '';
-                USERID = '';
-                Nav(context, const LoginView());
-              });
-            });
           }
         },
         builder: (context, state) {

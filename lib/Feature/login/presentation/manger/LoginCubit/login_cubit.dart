@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tqniaapp/Core/constans/const.dart';
+import 'package:tqniaapp/Core/errors/failures.dart';
 import 'package:tqniaapp/Core/remote/dio_helper.dart';
 import 'package:tqniaapp/Feature/login/data/models/login_model/login_model.dart';
 import 'package:tqniaapp/Feature/login/presentation/manger/LoginCubit/login_states.dart';
@@ -17,18 +18,19 @@ class LoginCubit extends Cubit<LoginStates> {
       Response<dynamic> res = await DioHelper.getDataWhenLogin(
         url: '$LOGINURlEndPoint?email=$email&password=$password',
       );
-      print('finsh');
-      print(res.data);
-      print(res.statusCode);
       list = LoginModel.fromJson(res.data);
-      print("object");
       if (list.status == 200) {
         emit(SignInSucc(model: list));
       } else {
         emit(SignInFailure(errorMessage: list.message.toString()));
       }
     } catch (e) {
-      emit(SignInFailure(errorMessage: e.toString()));
+      if (e is DioException) {
+        var x = ServerFailure.fromDioError(e);
+        emit(SignInFailure(errorMessage: x.msq.toString()));
+      } else {
+        emit(SignInFailure(errorMessage: e.toString()));
+      }
     }
   }
 
@@ -50,8 +52,12 @@ class LoginCubit extends Cubit<LoginStates> {
             ResetPasswordFailure(errorMessage: res.data['message'].toString()));
       }
     } catch (e) {
-      print("object");
-      emit(ResetPasswordFailure(errorMessage: e.toString()));
+      if (e is DioException) {
+        var x = ServerFailure.fromDioError(e);
+        emit((ResetPasswordFailure(errorMessage: x.msq.toString())));
+      } else {
+        emit(ResetPasswordFailure(errorMessage: e.toString()));
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/local/cache_Helper.dart';
@@ -26,8 +27,10 @@ class _SplachViewState extends State<SplachView> {
       if (TOKEN != '' && USERID != '') {
         print(TOKEN);
         print(USERID);
+        FirebaseMessaging.instance.subscribeToTopic('client$USERID');
         Nav(context, const HomeView());
       } else {
+        FirebaseMessaging.instance.unsubscribeFromTopic('client$USERID');
         onBordingCross
             ? Nav(context, const LoginView())
             : Nav(context, const OnBoardingView());

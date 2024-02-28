@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tqniaapp/Feature/home/data/model/client_model/client_model.dart';
 import 'package:tqniaapp/Feature/home/data/model/get_ticket_type/get_ticket_type.dart';
 import 'package:tqniaapp/Feature/home/data/model/label_model/label_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/tickets_model/tickets_model.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_ticket_repo/add_ticket_repo.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_state.dart';
 
@@ -19,7 +18,6 @@ class AddticketCubit extends Cubit<AddticketState> {
   List<ClientModel> projects = [];
 
   List<TicketType> ticketsTypes = [];
-  TicketsModel? ticketsModel;
 
   Future<void> getLabels() async {
     emit(GetLabelsloading());
@@ -55,18 +53,6 @@ class AddticketCubit extends Cubit<AddticketState> {
     });
   }
 
-  Future<void> getTicketsList() async {
-    emit(GetTicketsListloading());
-    var res = await repo.getTicketsList();
-    res.fold(
-        (failure) =>
-            emit(GetTicketsListFailuire(errorMsq: failure.msq.toString())),
-        (r) {
-      ticketsModel = r;
-      emit(GetTicketsListSucc(r));
-    });
-  }
-
   Future<void> addTicket({
     required String title,
     required String id,
@@ -77,7 +63,7 @@ class AddticketCubit extends Cubit<AddticketState> {
     required String labels,
     required String requestedbyid,
     required String description,
-    required File file,
+    File? file,
   }) async {
     print(file);
     emit(AddTicketloading());
@@ -151,5 +137,28 @@ class AddticketCubit extends Cubit<AddticketState> {
       requestedBy = r;
       emit(GetRequestedBySucc());
     });
+  }
+
+  Future<void> addCommentToTicket(
+      {required int id, required String description}) async {
+    emit(AddCommentloading());
+    var resp = await repo.addCommentToTicket(id: id, description: description);
+    resp.fold(
+        (failure) => emit(AddCommentFailuire(errorMsq: failure.msq.toString())),
+        (r) {
+      emit(AddCommentSucc(r));
+    });
+  }
+
+  Future<void> getAllFiled() async {
+    emit(GetAllFiledloading());
+    getLabels().then((value) {
+      getTicketTypes().then((value) {
+        getAssginTo().then((value) => {emit(GetAllFiledSucc())});
+      });
+    }).catchError(
+        (onError) {
+          emit(GetAllFiledFailuire(errorMsq: 'Opps Error $onError'));
+        });
   }
 }

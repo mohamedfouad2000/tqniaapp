@@ -9,9 +9,9 @@ class NoteCubit extends Cubit<NoteState> {
   NoteCubit(this.repo) : super(NoteInitial());
   static NoteCubit get(context) => BlocProvider.of(context);
   final AddNoteRepo repo;
-  Future<void> getNotes() async {
+  Future<void> getNotes({required String title}) async {
     emit(GetNotesLoading());
-    var res = await repo.getNotes();
+    var res = await repo.getNotes(title :title);
     res.fold((l) {
       emit(GetNotesFail(l.msq.toString()));
     }, (r) {
@@ -24,7 +24,7 @@ class NoteCubit extends Cubit<NoteState> {
     required String id,
     required String title,
     required String description,
-    required File file,
+    File? file,
   }) async {
     emit(AddNoteLoading());
     var res = await repo.addNote(

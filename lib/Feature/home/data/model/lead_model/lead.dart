@@ -45,6 +45,10 @@ class Lead {
   dynamic lastReachTitle;
   dynamic lastReachDate;
   String? note;
+  String? region;
+  String? industry;
+String ? sourceTitle;
+
 
   Lead({
     this.id,
@@ -93,6 +97,9 @@ class Lead {
     this.lastReachTitle,
     this.lastReachDate,
     this.note,
+    this.region,
+    this.industry,
+    this.sourceTitle
   });
 
   factory Lead.fromJson(Map<String, dynamic> json) => Lead(
@@ -141,7 +148,10 @@ class Lead {
         lastNoteTitle: json['last_note_title'] as dynamic,
         lastReachTitle: json['last_reach_title'] as dynamic,
         lastReachDate: json['last_reach_date'] as dynamic,
-        note: json['note'],
+        note: json['note'] as dynamic,
+        region:json['region'] as dynamic,
+        industry : json['industry']as dynamic,
+        sourceTitle: json['source_title']as dynamic,
       );
 
   Map<String, dynamic> toJson() => {
@@ -191,5 +201,7 @@ class Lead {
         'last_note_title': lastNoteTitle,
         'last_reach_title': lastReachTitle,
         'last_reach_date': lastReachDate,
+        'region':region,
+        'sourceTitle':sourceTitle,
       };
 }

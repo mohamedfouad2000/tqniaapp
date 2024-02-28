@@ -10,7 +10,9 @@ import 'package:tqniaapp/Feature/home/data/repo/add_note_repo/add_note_repo.dart
 
 class AddNoteRepoImp extends AddNoteRepo {
   @override
-  Future<Either<Failure, NotesModel>> getNotes() async {
+  Future<Either<Failure, NotesModel>> getNotes({
+    required String title,
+  }) async {
     NotesModel? model;
     print(TOKEN);
     print(USERID);
@@ -20,6 +22,7 @@ class AddNoteRepoImp extends AddNoteRepo {
           await DioHelper.getData(url: getNotesEndPoint, query: {
         'token': TOKEN,
         'client_id': USERID,
+        'title':title
       });
 
       print(res.data);
@@ -47,7 +50,7 @@ class AddNoteRepoImp extends AddNoteRepo {
     required String id,
     required String title,
     required String description,
-    required File file,
+    File? file,
   }) async {
     try {
       print(TOKEN);
@@ -65,8 +68,9 @@ class AddNoteRepoImp extends AddNoteRepo {
             'title': title,
             'description': description,
             'client_id': USERID,
-            'manualFiles[]': await MultipartFile.fromFile(file.path,
-                filename: file.path.split('/').last),
+            if (file?.path != null)
+              'manualFiles[]': await MultipartFile.fromFile(file!.path,
+                  filename: file.path.split('/').last),
           }));
       print(res.data);
       print("object");

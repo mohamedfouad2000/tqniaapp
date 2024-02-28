@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +12,6 @@ import 'package:tqniaapp/Feature/home/data/model/calls_model/call.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_calls_repo/add_calls_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/add%20calls/add_calls_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/add%20calls/add_calls_state.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
 
 class EditCallsForm extends StatefulWidget {
   const EditCallsForm({
@@ -30,11 +30,19 @@ class _EditCallsFormState extends State<EditCallsForm> {
   TextEditingController stateCont = TextEditingController();
 
   var formkey = GlobalKey<FormState>();
+  List<String> statesList = [
+    'Answered',
+    'No answer',
+    'Busy',
+    'Not available',
+    'Wrong number'
+  ];
+  String? callsState;
+
   @override
   void initState() {
-    // TODO: implement initState
     CreationDatecont.text = widget.model.createdAt ?? '';
-    stateCont.text = widget.model.status ?? '';
+    callsState = widget.model.status ?? '';
     DescriptionCont.text = widget.model.notes ?? '';
     super.initState();
   }
@@ -66,7 +74,9 @@ class _EditCallsFormState extends State<EditCallsForm> {
                   backgroundColor: Colors.black,
                   textColor: Colors.white,
                   fontSize: 18.0);
-              NavegatorPush(context, const HomeView());
+              Navigator.pop(context);
+
+              // AddCallsCubit.get(context).getCalls();
             }
             if (state is AddnewCallsfail) {
               Fluttertoast.showToast(
@@ -103,9 +113,78 @@ class _EditCallsFormState extends State<EditCallsForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      customTextFormedFiled(
-                        controller: stateCont,
-                        hintText: 'Write state',
+                      SizedBox(
+                        height: 55,
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font14.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Choose Owner",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            return u.toString();
+                          },
+                          onChanged: (i) {
+                            callsState = i;
+                            print(i);
+                          },
+                          items: statesList,
+                          enabled: true,
+                          selectedItem: callsState,
+                        ),
                       ),
                       const SizedBox(
                         height: 24,
@@ -118,26 +197,6 @@ class _EditCallsFormState extends State<EditCallsForm> {
                         height: 12,
                       ),
                       InkWell(
-                          // onTap: () async {
-                          //   DateTime? pickedDate = await showDatePicker(
-                          //       context: context,
-                          //       initialDate: DateTime.now(),
-                          //       firstDate: DateTime(1950),
-                          //       //DateTime.now() - not to allow to choose before today.
-                          //       lastDate: DateTime(2100));
-
-                          //   if (pickedDate != null) {
-                          //     print(
-                          //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          //     String formattedDate =
-                          //         DateFormat('yyyy-MM-dd').format(pickedDate);
-                          //     print(
-                          //         formattedDate); //formatted date output using intl package =>  2021-03-16
-
-                          //     CreationDatecont.text =
-                          //         formattedDate; //set output date to TextField value.
-                          //   } else {}
-                          // },
                           child: customTextFormedFiled(
                               controller: CreationDatecont,
                               hintText: 'Date',

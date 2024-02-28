@@ -1,6 +1,8 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tqniaapp/Core/constans/const.dart';
 
 import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
@@ -11,7 +13,7 @@ import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_calls_repo/add_calls_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/add%20calls/add_calls_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/add%20calls/add_calls_state.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/leads_deatils_screen.dart';
 
 class AddCallsForm extends StatefulWidget {
   const AddCallsForm({
@@ -24,12 +26,21 @@ class AddCallsForm extends StatefulWidget {
 
 class _AddCallsFormState extends State<AddCallsForm> {
   TextEditingController CreationDatecont = TextEditingController();
-  TextEditingController stateCont = TextEditingController();
 
   TextEditingController TittleCont = TextEditingController();
   TextEditingController DescriptionCont = TextEditingController();
+  TextEditingController NoteCont = TextEditingController();
 
   String dn = DateFormat('MM-dd-yyyy hh:mm a').format(DateTime.now());
+  String? callsState;
+  bool isEmpty = false;
+  List<String> statesList = [
+    'Answered',
+    'No answer',
+    'Busy',
+    'Not available',
+    'Wrong number'
+  ];
 
   var formkey = GlobalKey<FormState>();
   @override
@@ -54,7 +65,7 @@ class _AddCallsFormState extends State<AddCallsForm> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-            NavegatorPush(context, const HomeView());
+            Nav(context, LeedsDetiles(id: int.parse(editModel!.id.toString())));
           }
           if (state is AddnewCallsfail) {
             Fluttertoast.showToast(
@@ -90,13 +101,94 @@ class _AddCallsFormState extends State<AddCallsForm> {
                   const SizedBox(
                     height: 12,
                   ),
-                  customTextFormedFiled(
-                    controller: stateCont,
-                    hintText: 'State',
+                  SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: DropdownSearch<String>(
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        baseStyle:
+                            StylesData.font14.copyWith(color: kMainColor),
+                        dropdownSearchDecoration: InputDecoration(
+                          suffixIconColor: Colors.grey[300],
+                          hintText: 'Choose Region',
+                          hintStyle: StylesData.font14
+                              .copyWith(color: const Color(0x330D223F)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: kMainColor),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          border: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Color(0xFFEAEAEA)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Color(0xFFEAEAEA)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              hintText: "Choose State",
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              // labelText: 'Password',
+                            ),
+                          )),
+                      itemAsString: (String u) {
+                        return u.toString();
+                      },
+                      onChanged: (i) {
+                        setState(() {
+                          callsState = i;
+                        });
+                      },
+                      items: statesList,
+                      enabled: true,
+                      selectedItem: callsState,
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
+                  if (callsState == 'Answered')
+                    customTextFormedFiled(
+                      controller: NoteCont,
+                      hintText: 'Write Note',
+                    ),
+                  if (callsState == 'Answered')
+                    const SizedBox(
+                      height: 12,
+                    ),
                   Text(
                     "Creation Date",
                     style: StylesData.font16.copyWith(color: Colors.black),
@@ -148,22 +240,59 @@ class _AddCallsFormState extends State<AddCallsForm> {
                   const SizedBox(
                     height: 12,
                   ),
-                  customTextFormedFiled(
+                  customTextFiled(
                       controller: DescriptionCont,
                       hintText: 'Write Description',
                       maxLines: 6),
                   const SizedBox(
                     height: 24,
                   ),
+                  if (isEmpty)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(078),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.info,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Enter All required fileds',
+                              style: StylesData.font14
+                                  .copyWith(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (isEmpty)
+                    const SizedBox(
+                      height: 24,
+                    ),
                   defaultButton(
                       fun: () {
                         if (formkey.currentState!.validate()) {
-                          AddCallsCubit.get(context).addCall(
-                              id: '0',
-                              status: stateCont.text,
-                              date: CreationDatecont.text,
-                              notes: DescriptionCont.text,
-                              description: DescriptionCont.text);
+                          if (callsState != null && callsState != '') {
+                            AddCallsCubit.get(context).addCall(
+                                id: '0',
+                                status: callsState ?? '',
+                                date: CreationDatecont.text,
+                                notes: NoteCont.text,
+                                description: DescriptionCont.text);
+                          } else {
+                            setState(() {
+                              isEmpty = true;
+                            });
+                          }
                         }
                       },
                       textWidget: state is AddnewCallsLoading

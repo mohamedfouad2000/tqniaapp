@@ -23,7 +23,7 @@ class OnBoardingView extends StatelessWidget {
               onTap: () {
                 CacheHelper.saveData(key: 'onBoarding', value: true)
                     .then((value) {
-                  NavegatorPush(context, const LoginView());
+                  Nav(context, const LoginView());
                 });
               },
               child: Row(

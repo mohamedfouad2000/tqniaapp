@@ -18,19 +18,17 @@ class LoginView extends StatelessWidget {
         builder: (BuildContext context, state) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: kbackColor,
-              foregroundColor: kbackColor,
-              surfaceTintColor: kbackColor,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_outlined,
-                  size: 20,
-                  color: Colors.black,
-                ),
-              ),
+    
+              // leading: IconButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   icon: const Icon(
+              //     Icons.arrow_back_ios_outlined,
+              //     size: 20,
+              //     color: Colors.black,
+              //   ),
+              // ),
             ),
             body: LoginViewBody(
                 emailController: emailController,

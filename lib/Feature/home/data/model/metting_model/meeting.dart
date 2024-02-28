@@ -38,6 +38,8 @@ class Meeting {
   dynamic companyName;
   dynamic isLead;
   dynamic labelsList;
+  String? status;
+
 
   Meeting({
     this.id,
@@ -79,6 +81,7 @@ class Meeting {
     this.companyName,
     this.isLead,
     this.labelsList,
+    this.status
   });
 
   factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
@@ -121,6 +124,7 @@ class Meeting {
         companyName: json['company_name'] as dynamic,
         isLead: json['is_lead'] as dynamic,
         labelsList: json['labels_list'] as dynamic,
+        status: json['status'] as String?
       );
 
   Map<String, dynamic> toJson() => {
@@ -163,5 +167,6 @@ class Meeting {
         'company_name': companyName,
         'is_lead': isLead,
         'labels_list': labelsList,
+        'status':status
       };
 }

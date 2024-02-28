@@ -1,15 +1,11 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
-
 import 'package:tqniaapp/Core/utils/styles.dart';
-import 'package:tqniaapp/Feature/home/data/model/owener_model/owener_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/source_model/source_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/status_model/status_model.dart';
-
 import 'package:tqniaapp/Feature/home/data/repo/homerepo/home_repos_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/AddLead/add_lead_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/AddLead/add_lead_state.dart';
@@ -33,226 +29,57 @@ class AddLeedForm extends StatefulWidget {
     required this.IndustryCont,
     required this.NoteCont,
   });
-  final TextEditingController NameCont;
-  final TextEditingController StatusCont;
-  final TextEditingController OwnerCont;
-  final TextEditingController SourceCont;
-  final TextEditingController AddressCont;
-  final TextEditingController CityCont;
-  final TextEditingController StateCont;
-  final TextEditingController ZipCont;
-  final TextEditingController CountryCont;
-  final TextEditingController PhoneCont;
-  final TextEditingController MobileCont;
-  final TextEditingController WebsiteCont;
-  final TextEditingController IndustryCont;
-  final TextEditingController NoteCont;
+  final TextEditingController? NameCont;
+  final TextEditingController? StatusCont;
+  final TextEditingController? OwnerCont;
+  final TextEditingController? SourceCont;
+  final TextEditingController? AddressCont;
+  final TextEditingController? CityCont;
+  final TextEditingController? StateCont;
+  final TextEditingController? ZipCont;
+  final TextEditingController? CountryCont;
+  final TextEditingController? PhoneCont;
+  final TextEditingController? MobileCont;
+  final TextEditingController? WebsiteCont;
+  final TextEditingController? IndustryCont;
+  final TextEditingController? NoteCont;
 
   @override
   State<AddLeedForm> createState() => _AddLeedFormState();
 }
 
 class _AddLeedFormState extends State<AddLeedForm> {
-  List<String> Currency = [
-    "AED",
-    "AFN",
-    "ALL",
-    "AMD",
-    "ANG",
-    "AOA",
-    "ARS",
-    "AUD",
-    "AWG",
-    "AZN",
-    "BAM",
-    "BBD",
-    "BDT",
-    "BGN",
-    "BHD",
-    "BIF",
-    "BMD",
-    "BND",
-    "BOB",
-    "BOV",
-    "BRL",
-    "BSD",
-    "BTN",
-    "BWP",
-    "BYR",
-    "BZD",
-    "CAD",
-    "CDF",
-    "CHE",
-    "CHF",
-    "CHW",
-    "CLF",
-    "CLP",
-    "CNY",
-    "COP",
-    "COU",
-    "CRC",
-    "CUC",
-    "CUP",
-    "CVE",
-    "CZK",
-    "DJF",
-    "DKK",
-    "DOP",
-    "DZD",
-    "EGP",
-    "ERN",
-    "ETB",
-    "EUR",
-    "FJD",
-    "FKP",
-    "GBP",
-    "GEL",
-    "GHS",
-    "GIP",
-    "GMD",
-    "GNF",
-    "GTQ",
-    "GYD",
-    "HKD",
-    "HNL",
-    "HRK",
-    "HTG",
-    "HUF",
-    "IDR",
-    "ILS",
-    "INR",
-    "IQD",
-    "IRR",
-    "ISK",
-    "JMD",
-    "JOD",
-    "JPY",
-    "KES",
-    "KGS",
-    "KHR",
-    "KMF",
-    "KPW",
-    "KRW",
-    "KWD",
-    "KYD",
-    "KZT",
-    "LAK",
-    "LBP",
-    "LKR",
-    "LRD",
-    "LSL",
-    "LYD",
-    "MAD",
-    "MDL",
-    "MGA",
-    "MKD",
-    "MMK",
-    "MNT",
-    "MOP",
-    "MRO",
-    "MUR",
-    "MVR",
-    "MWK",
-    "MXN",
-    "MXV",
-    "MYR",
-    "MZN",
-    "NAD",
-    "NGN",
-    "NIO",
-    "NOK",
-    "NPR",
-    "NZD",
-    "OMR",
-    "PAB",
-    "PEN",
-    "PGK",
-    "PHP",
-    "PKR",
-    "PLN",
-    "PYG",
-    "QAR",
-    "RON",
-    "RSD",
-    "RUB",
-    "RWF",
-    "SAR",
-    "SBD",
-    "SCR",
-    "SDG",
-    "SEK",
-    "SGD",
-    "SHP",
-    "SLL",
-    "SOS",
-    "SRD",
-    "SSP",
-    "STD",
-    "SYP",
-    "SZL",
-    "THB",
-    "TJS",
-    "TMT",
-    "TND",
-    "TOP",
-    "TRY",
-    "TTD",
-    "TWD",
-    "TZS",
-    "UAH",
-    "UGX",
-    "USD",
-    "USN",
-    "USS",
-    "UYI",
-    "UYU",
-    "UZS",
-    "VEF",
-    "VND",
-    "VUV",
-    "WST",
-    "XAF",
-    "XAG",
-    "XAU",
-    "XBA",
-    "XBB",
-    "XBC",
-    "XBD",
-    "XCD",
-    "XDR",
-    "XFU",
-    "XOF",
-    "XPD",
-    "XPF",
-    "XPT",
-    "XSU",
-    "XTS",
-    "XUA",
-    "YER",
-    "ZAR",
-    "ZMW"
-  ];
-
-  String? statusValue;
 
   String? Source;
-  String? Currencyitem;
-  String? owener;
+  String? status;
   bool isEmpty = false;
+
+  String? owener;
+  String? regionItem;
+
   var formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    owener = USERID;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => AddLeadCubit(HomeRepoImp())
           ..getOwners()
+          ..getLeadSources()
           ..getLeadStatus()
-          ..getLeadSources(),
+          ..getRegion(),
         child: BlocConsumer<AddLeadCubit, AddLeadState>(
           builder: (context, state) {
             if (AddLeadCubit.get(context).sourceModel.isNotEmpty &&
                 AddLeadCubit.get(context).statusModel.isNotEmpty &&
-                AddLeadCubit.get(context).ownerModel.isNotEmpty) {
+                AddLeadCubit.get(context).ownerModel.isNotEmpty &&
+                AddLeadCubit.get(context).regionList.isNotEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
@@ -281,128 +108,193 @@ class _AddLeedFormState extends State<AddLeedForm> {
                         height: 24,
                       ),
                       Text(
-                        "Status",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: statusValue,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Choose Status',
-                              style: StylesData.font14
-                                  .copyWith(color: const Color(0x330D223F)),
-                            ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // stateId =
-                              setState(() {
-                                print(value);
-                                statusValue = value.toString();
-                              });
-                            },
-                            items: AddLeadCubit.get(context)
-                                .statusModel
-                                .map<DropdownMenuItem<String>>(
-                                    (StatusModel? value) {
-                              return DropdownMenuItem<String>(
-                                value: value?.id.toString(),
-                                child: Text(value?.title.toString() ?? ''),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
                         "Owner",
                         style: StylesData.font16.copyWith(color: Colors.black),
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      Container(
-                        width: double.infinity,
+                      SizedBox(
                         height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font12.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: owener,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Choose Owner',
-                              style: StylesData.font14
-                                  .copyWith(color: const Color(0x330D223F)),
-                            ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              print(value);
-                              setState(() {
-                                owener = value!;
-                              });
-                            },
-                            items: AddLeadCubit.get(context)
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Choose Owner",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            String x = '';
+                            AddLeadCubit.get(context)
                                 .ownerModel
-                                .map<DropdownMenuItem<String>>(
-                                    (OwenerModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.name!),
-                              );
-                            }).toList(),
+                                .forEach((element) {
+                              if (u == element.id) x = element.name!;
+                            });
+                            return x.toString();
+                          },
+                          onChanged: (i) {
+                            owener = i;
+                            print(i);
+                          },
+                          items: [
+                            ...List.generate(
+                                AddLeadCubit.get(context).ownerModel.length,
+                                (index) => AddLeadCubit.get(context)
+                                    .ownerModel[index]
+                                    .id
+                                    .toString()),
+                          ],
+                          enabled: true,
+                          selectedItem: owener,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Text(
+                        "Status",
+                        style: StylesData.font16.copyWith(color: Colors.black),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      SizedBox(
+                        height: 55,
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font12.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
                           ),
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Choose Status",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            String x = '';
+                            AddLeadCubit.get(context)
+                                .statusModel
+                                .forEach((element) {
+                              if (u == element.id) x = element.title!;
+                            });
+                            return x.toString();
+                          },
+                          onChanged: (i) {
+                            print(i);
+                            status = i;
+                            print(i);
+                          },
+                          items: [
+                            ...List.generate(
+                                AddLeadCubit.get(context).statusModel.length,
+                                (index) => AddLeadCubit.get(context)
+                                    .statusModel[index]
+                                    .id
+                                    .toString()),
+                          ],
+                          enabled: true,
+                          selectedItem: status,
                         ),
                       ),
                       const SizedBox(
@@ -415,57 +307,92 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Container(
-                        width: double.infinity,
+                      SizedBox(
                         height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: Source,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Choose Source',
-                              style: StylesData.font14
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font12.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              hintText: 'Choose Source',
+                              hintStyle: StylesData.font14
                                   .copyWith(color: const Color(0x330D223F)),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
                             ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                Source = value!;
-                              });
-                            },
-                            items: AddLeadCubit.get(context)
-                                .sourceModel
-                                .map<DropdownMenuItem<String>>(
-                                    (SourceModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.title!),
-                              );
-                            }).toList(),
                           ),
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Choose Source",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            String x = '';
+                            AddLeadCubit.get(context)
+                                .sourceModel
+                                .forEach((element) {
+                              if (u == element.id) x = element.title!;
+                            });
+                            return x.toString();
+                          },
+                          onChanged: (i) {
+                            Source = i;
+                          },
+                          items: [
+                            ...List.generate(
+                                AddLeadCubit.get(context).sourceModel.length,
+                                (index) => AddLeadCubit.get(context)
+                                    .sourceModel[index]
+                                    .id
+                                    .toString()),
+                          ],
+                          enabled: true,
+                          selectedItem: Source,
                         ),
                       ),
                       const SizedBox(
@@ -478,60 +405,9 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      customTextFormedFiled(
-                          controller: widget.AddressCont,
+                      customTextFiled(
+                          controller: widget.AddressCont!,
                           hintText: 'Write Your Address'),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "City",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      customTextFormedFiled(
-                          controller: widget.CityCont, hintText: 'Your City'),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "State",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      customTextFormedFiled(
-                          controller: widget.StateCont, hintText: 'Your State'),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Zip",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      customTextFormedFiled(
-                          controller: widget.ZipCont,
-                          hintText: 'Your Zip',
-                          type: TextInputType.number),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Country",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      customTextFormedFiled(
-                          controller: widget.CountryCont,
-                          hintText: 'Your Country'),
                       const SizedBox(
                         height: 24,
                       ),
@@ -570,12 +446,9 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      customTextFormedFiled(
-                          controller: widget.WebsiteCont,
+                      customTextFiled(
+                          controller: widget.WebsiteCont!,
                           hintText: 'Your Website'),
-                      const SizedBox(
-                        height: 24,
-                      ),
                       const SizedBox(
                         height: 24,
                       ),
@@ -586,68 +459,95 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      customTextFormedFiled(
-                          controller: widget.IndustryCont,
+                      customTextFiled(
+                          controller: widget.IndustryCont!,
                           hintText: 'Your Industry'),
                       const SizedBox(
                         height: 24,
                       ),
-                      Text(
+                     Text(
                         "Region",
                         style: StylesData.font16.copyWith(color: Colors.black),
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      Container(
-                        width: double.infinity,
+                      SizedBox(
                         height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: Currencyitem,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Choose Region',
-                              style: StylesData.font14
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font12.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              hintText: 'Choose Region',
+                              hintStyle: StylesData.font14
                                   .copyWith(color: const Color(0x330D223F)),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
                             ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                Currencyitem = value ?? '';
-                              });
-                            },
-                            items: Currency.map<DropdownMenuItem<String>>(
-                                (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
                           ),
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  suffixIconColor: Colors.grey[300],
+
+                                  hintText: "Choose Region",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            return u.toString();
+                          },
+                          onChanged: (i) {
+                            regionItem = i;
+                            print(i);
+                          },
+                          items: AddLeadCubit.get(context).regionList,
+                          enabled: true,
+                          selectedItem: regionItem,
                         ),
                       ),
                       const SizedBox(
@@ -661,7 +561,7 @@ class _AddLeedFormState extends State<AddLeedForm> {
                         height: 12,
                       ),
                       customTextFiled(
-                          controller: widget.NoteCont,
+                          controller: widget.NoteCont!,
                           hintText: 'Write Note',
                           maxLines: 6),
                       const SizedBox(
@@ -701,27 +601,29 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       defaultButton(
                           fun: () {
                             if (formKey.currentState!.validate()) {
-                              if (Source != null &&
-                                  statusValue != null &&
-                                  Currencyitem != null &&
-                                  owener != null) {
+                              print(status);
+                              print("object");
+                              if (Source != null) {
                                 AddLeadCubit.get(context).addNewLeeds(
-                                    country: widget.CountryCont.text,
-                                    website: widget.WebsiteCont.text,
-                                    leadName: widget.NameCont.text,
-                                    status: int.parse(statusValue!),
+                                    country: '',
+                                    currency: '',
+                                    website: widget.WebsiteCont?.text ?? '',
+                                    leadName: widget.NameCont?.text ?? '',
+                                    status:
+                                        status != null ? int.parse(status!) : 0,
                                     owner: int.parse(owener!),
-                                    source: int.parse(Source!),
-                                    address: widget.AddressCont.text,
-                                    city: widget.CityCont.text,
-                                    state: widget.StateCont.text,
-                                    zip: widget.ZipCont.text,
-                                    currency: Currencyitem!,
-                                    phone: widget.PhoneCont.text,
-                                    mobile: widget.MobileCont.text,
-                                    industry: widget.IndustryCont.text,
-                                    region: Currencyitem!,
-                                    note: widget.NoteCont.text);
+                                    source:
+                                        Source != null ? int.parse(Source!) : 0,
+                                    address: widget.AddressCont?.text ?? '',
+                                    city: '',
+                                    state: widget.StateCont?.text ?? '',
+                                    zip: '',
+                      
+                                    phone: widget.PhoneCont?.text ?? '',
+                                    mobile: widget.MobileCont?.text ?? '',
+                                    industry: widget.IndustryCont?.text ?? '',
+                                    region: regionItem ?? '',
+                                    note: widget.NoteCont?.text ?? '');
                               } else {
                                 setState(() {
                                   isEmpty = true;

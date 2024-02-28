@@ -15,7 +15,8 @@ class NotificationRepoImp extends NotificationRepo {
       Response<dynamic> res =
           await DioHelper.getData(url: getNotificationEndPoint, query: {
         'token': TOKEN,
-        'offset': 0,
+        'offset': '',
+        'limit':30,
       });
       print('ahahshdhuaud');
       print(res.data);
@@ -40,14 +41,15 @@ class NotificationRepoImp extends NotificationRepo {
   Future<Either<Failure, int>> getNotificationCount() async {
     try {
       print('siu');
+      print("In Notification");
       Response<dynamic> res =
           await DioHelper.getData(url: getNotificationCountEndPoint, query: {
         'token': TOKEN,
       });
-      print('ahahshdhuaud');
       print(res.data);
+      print('/**//*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/**/${res.data['data']['count']}');
       if (res.data['status'] == 200) {
-        return right(int.parse(res.data['data']['notifiations']));
+        return right(res.data['data']['count']);
       } else {
         return left(ServerFailure(msq: res.data['message']));
       }

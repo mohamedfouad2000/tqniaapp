@@ -17,38 +17,31 @@ class NotificationScreen extends StatelessWidget {
           NotificationCubit(NotificationRepoImp())..getNotification(),
       child: BlocBuilder<NotificationCubit, NotificationState>(
         builder: (context, state) {
-          return WillPopScope(
-            onWillPop: () async {
-              print("object");
-              await NotificationCubit.get(context).MakeNotificationRead(id: 0);
-              return true;
-            },
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: kbackColor,
-                foregroundColor: kbackColor,
-                centerTitle: true,
-                title: Text(
-                  "Notifications",
-                  style: StylesData.font18.copyWith(color: Colors.black),
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    NotificationCubit.get(context)
-                        .MakeNotificationRead(id: 0)
-                        .then((value) {
-                      Navigator.pop(context);
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_outlined,
-                    size: 20,
-                    color: Colors.black,
-                  ),
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: kbackColor,
+              foregroundColor: kbackColor,
+              centerTitle: true,
+              title: Text(
+                "Notifications",
+                style: StylesData.font18.copyWith(color: Colors.black),
+              ),
+              leading: IconButton(
+                onPressed: () {
+                  // NotificationCubit.get(context)
+                  //     .MakeNotificationRead(id: 0)
+                  //     .then((value) {
+                    Navigator.pop(context);
+                  // });
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  size: 20,
+                  color: Colors.black,
                 ),
               ),
-              body: const NotificationScreenBody(),
             ),
+            body: const NotificationScreenBody(),
           );
         },
       ),

@@ -28,22 +28,14 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> MakeNotificationRead({required int id}) async {
-    emit(MakeNotifAsReadLoading());
+    // emit(MakeNotifAsReadLoading());
     var res = await repo.MakeNotificationRead(id: id);
     res.fold((l) {
       emit(MakeNotifAsReaderoor(errormsq: l.msq.toString()));
     }, (r) {
-      emit(MakeNotifAsReadSucc(txt: r.toString()));
+      // emit(MakeNotifAsReadSucc(txt: r.toString()));
     });
   }
 
-  Future<void> deleteNotificationById({required int id}) async {
-    emit(DeleteNotificationByIdLoading());
-    var res = await repo.deleteNotificationById(id: id);
-    res.fold((l) {
-      emit(DeleteNotificationByIderoor(errormsq: l.msq.toString()));
-    }, (r) {
-      emit(DeleteNotificationByIdSucc(txt: r.toString()));
-    });
-  }
+ 
 }

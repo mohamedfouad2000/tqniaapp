@@ -13,6 +13,7 @@ import 'package:tqniaapp/Feature/home/presentation/manager/Leads%20Info/leads_in
 class LeadInfoScreen extends StatelessWidget {
   const LeadInfoScreen({super.key, required this.id});
   final int id;
+  //city,state,zip,country
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -55,7 +56,7 @@ class LeadInfoScreen extends StatelessWidget {
                     ),
                     leadHeadersubtitle(
                         txt1: state.model.ownerName ?? '',
-                        txt2: state.model.leadSourceId ?? '',
+                        txt2: state.model.sourceTitle ?? '',
                         color: state.model.leadStatusColor ?? '',
                         nottext: true),
                     const SizedBox(
@@ -64,14 +65,14 @@ class LeadInfoScreen extends StatelessWidget {
                     leadHeadertitle(
                         image1: AssetsData.address,
                         txt1: "Address",
-                        image2: AssetsData.city,
-                        txt2: "City"),
+                        image2: AssetsData.indust,
+                        txt2: "Industry"),
                     const SizedBox(
                       height: 15,
                     ),
                     leadHeadersubtitle(
                         txt1: state.model.address ?? '',
-                        txt2: state.model.city ?? ''),
+                        txt2: state.model.industry ?? ''),
                     const SizedBox(
                       height: 24,
                     ),
@@ -80,31 +81,18 @@ class LeadInfoScreen extends StatelessWidget {
                       height: 24,
                     ),
                     leadHeadertitle(
-                        image1: AssetsData.map,
-                        txt1: "State",
-                        image2: AssetsData.zip,
-                        txt2: "ZIP"),
+                      image1: AssetsData.city,
+                      txt1: "Region",
+                      image2: AssetsData.phone,
+                      txt2: "Phone",
+                    ),
                     const SizedBox(
                       height: 15,
                     ),
                     leadHeadersubtitle(
-                      txt1: state.model.state ?? '',
-                      txt2: state.model.zip ?? '',
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    leadHeadertitle(
-                        image1: AssetsData.country,
-                        txt1: "Country",
-                        image2: AssetsData.phone,
-                        txt2: "Phone"),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    leadHeadersubtitle(
-                      txt1: state.model.country ?? '',
+                      txt1: state.model.region ?? '',
                       txt2: state.model.phone ?? '',
+                      isphone: true,
                     ),
                     const SizedBox(
                       height: 30,
@@ -118,6 +106,7 @@ class LeadInfoScreen extends StatelessWidget {
                       height: 15,
                     ),
                     leadHeadersubtitle(
+                      ismobile: true,
                       txt1: state.model.vatNumber ?? '',
                       txt2: state.model.website ?? '',
                     ),
@@ -127,36 +116,6 @@ class LeadInfoScreen extends StatelessWidget {
                     const LineWidget(),
                     const SizedBox(
                       height: 24,
-                    ),
-                    leadHeadertitle(
-                        image1: AssetsData.indust,
-                        txt1: "Industry",
-                        image2: AssetsData.city,
-                        txt2: "Region"),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    leadHeadersubtitle(
-                      txt1: state.model.currency ?? '',
-                      txt2: state.model.country ?? '',
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    leadHeadertitle(
-                        image1: AssetsData.status,
-                        txt1: "Notes",
-                        image2: '',
-                        txt2: ""),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    leadHeadersubtitle(
-                      txt1: state.model.note ?? '',
-                      txt2: '',
-                    ),
-                    const SizedBox(
-                      height: 30,
                     ),
                   ],
                 ),
@@ -228,6 +187,8 @@ class LeadInfoScreen extends StatelessWidget {
   Row leadHeadersubtitle(
       {required String txt1,
       required String txt2,
+      bool ismobile = false,
+      bool isphone = false,
       bool nottext = false,
       String color = ''}) {
     return Row(
@@ -235,9 +196,19 @@ class LeadInfoScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: Text(
-            txt1,
-            style: StylesData.font12.copyWith(color: const Color(0xFFA29EB6)),
+          child: InkWell(
+            onTap: () {
+              print(txt1);
+              if (ismobile) {
+                openDialPad(txt1);
+              }
+            },
+            child: Text(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              txt1,
+              style: StylesData.font12.copyWith(color: const Color(0xFFA29EB6)),
+            ),
           ),
         ),
         const SizedBox(
@@ -259,6 +230,8 @@ class LeadInfoScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       txt2,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.rubik(
                           textStyle: const TextStyle(
                         fontSize: 12,
@@ -270,10 +243,20 @@ class LeadInfoScreen extends StatelessWidget {
                 ),
               )
             : Flexible(
-                child: Text(
-                  txt2,
-                  style: StylesData.font12
-                      .copyWith(color: const Color(0xFFA29EB6)),
+                child: InkWell(
+                  onTap: () {
+                    print(txt2);
+                    if (isphone) {
+                      openDialPad(txt2);
+                    }
+                  },
+                  child: Text(
+                    txt2,
+                    style: StylesData.font12
+                        .copyWith(color: const Color(0xFFA29EB6)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
       ],

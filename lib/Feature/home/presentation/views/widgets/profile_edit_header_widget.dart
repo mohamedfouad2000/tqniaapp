@@ -23,13 +23,18 @@ class ProfileEditHeaderWidget extends StatelessWidget {
       builder: (context, state) {
         if (state is GetUserDataSucc) {
           print(state.model.data!.user?.phone);
+          print(state.model.data!.user!.image);
+          print("object");
+
           return Row(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(1000000),
                 child: CachedNetworkImage(
                   height: 46,
-                  imageUrl: '$showProfileImage${state.model.data!.user!.image}',
+                  imageUrl: state.model.data!.user!.image != null
+                      ? '$showProfileImage${state.model.data!.user!.image}'
+                      : 'https://system.tqnia.me/assets/images/avatar.jpg',
                   placeholder: (context, url) =>
                       LoadingAnimationWidget.newtonCradle(
                     size: 50,
@@ -74,8 +79,10 @@ class ProfileEditHeaderWidget extends StatelessWidget {
                               '${state.model.data!.user?.firstName} ${state.model.data!.user?.lastName} ',
                           email: state.model.data?.user?.email.toString() ?? '',
                           phone: state.model.data?.user?.phone.toString() ?? '',
-                          image:
-                              '$showProfileImage${state.model.data!.user!.image}'));
+                          image: state.model.data?.user?.image.toString() ==
+                                  'null'
+                              ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                              : '$showProfileImage${state.model.data!.user!.image}'));
                 },
                 child: Container(
                   width: 94,

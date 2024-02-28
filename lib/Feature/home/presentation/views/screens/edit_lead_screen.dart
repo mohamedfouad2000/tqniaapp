@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,9 +6,7 @@ import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Feature/home/data/model/lead_model/lead.dart';
-import 'package:tqniaapp/Feature/home/data/model/owener_model/owener_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/source_model/source_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/status_model/status_model.dart';
+
 import 'package:tqniaapp/Feature/home/data/repo/homerepo/home_repos_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/AddLead/add_lead_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/AddLead/add_lead_state.dart';
@@ -20,228 +19,55 @@ class EditLeadScreen extends StatefulWidget {
   @override
   State<EditLeadScreen> createState() => _EditLeadScreenState();
 }
+//city,state,zip,country
 
 class _EditLeadScreenState extends State<EditLeadScreen> {
-  TextEditingController NameCont = TextEditingController();
-  TextEditingController StatusCont = TextEditingController();
-  TextEditingController OwnerCont = TextEditingController();
-  TextEditingController SourceCont = TextEditingController();
-  TextEditingController AddressCont = TextEditingController();
-  TextEditingController CityCont = TextEditingController();
-  TextEditingController StateCont = TextEditingController();
-  TextEditingController ZipCont = TextEditingController();
-  TextEditingController CountryCont = TextEditingController();
-  TextEditingController PhoneCont = TextEditingController();
-  TextEditingController MobileCont = TextEditingController();
-  TextEditingController WebsiteCont = TextEditingController();
-  TextEditingController IndustryCont = TextEditingController();
-  TextEditingController NoteCont = TextEditingController();
+  TextEditingController? NameCont = TextEditingController();
+  TextEditingController? StatusCont = TextEditingController();
+  TextEditingController? OwnerCont = TextEditingController();
+  TextEditingController? SourceCont = TextEditingController();
+  TextEditingController? AddressCont = TextEditingController();
+  TextEditingController? PhoneCont = TextEditingController();
+  TextEditingController? MobileCont = TextEditingController();
+  TextEditingController? WebsiteCont = TextEditingController();
+  TextEditingController? IndustryCont = TextEditingController();
+  TextEditingController? NoteCont = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  List<String> Currency = [
-    "AED",
-    "AFN",
-    "ALL",
-    "AMD",
-    "ANG",
-    "AOA",
-    "ARS",
-    "AUD",
-    "AWG",
-    "AZN",
-    "BAM",
-    "BBD",
-    "BDT",
-    "BGN",
-    "BHD",
-    "BIF",
-    "BMD",
-    "BND",
-    "BOB",
-    "BOV",
-    "BRL",
-    "BSD",
-    "BTN",
-    "BWP",
-    "BYR",
-    "BZD",
-    "CAD",
-    "CDF",
-    "CHE",
-    "CHF",
-    "CHW",
-    "CLF",
-    "CLP",
-    "CNY",
-    "COP",
-    "COU",
-    "CRC",
-    "CUC",
-    "CUP",
-    "CVE",
-    "CZK",
-    "DJF",
-    "DKK",
-    "DOP",
-    "DZD",
-    "EGP",
-    "ERN",
-    "ETB",
-    "EUR",
-    "FJD",
-    "FKP",
-    "GBP",
-    "GEL",
-    "GHS",
-    "GIP",
-    "GMD",
-    "GNF",
-    "GTQ",
-    "GYD",
-    "HKD",
-    "HNL",
-    "HRK",
-    "HTG",
-    "HUF",
-    "IDR",
-    "ILS",
-    "INR",
-    "IQD",
-    "IRR",
-    "ISK",
-    "JMD",
-    "JOD",
-    "JPY",
-    "KES",
-    "KGS",
-    "KHR",
-    "KMF",
-    "KPW",
-    "KRW",
-    "KWD",
-    "KYD",
-    "KZT",
-    "LAK",
-    "LBP",
-    "LKR",
-    "LRD",
-    "LSL",
-    "LYD",
-    "MAD",
-    "MDL",
-    "MGA",
-    "MKD",
-    "MMK",
-    "MNT",
-    "MOP",
-    "MRO",
-    "MUR",
-    "MVR",
-    "MWK",
-    "MXN",
-    "MXV",
-    "MYR",
-    "MZN",
-    "NAD",
-    "NGN",
-    "NIO",
-    "NOK",
-    "NPR",
-    "NZD",
-    "OMR",
-    "PAB",
-    "PEN",
-    "PGK",
-    "PHP",
-    "PKR",
-    "PLN",
-    "PYG",
-    "QAR",
-    "RON",
-    "RSD",
-    "RUB",
-    "RWF",
-    "SAR",
-    "SBD",
-    "SCR",
-    "SDG",
-    "SEK",
-    "SGD",
-    "SHP",
-    "SLL",
-    "SOS",
-    "SRD",
-    "SSP",
-    "STD",
-    "SYP",
-    "SZL",
-    "THB",
-    "TJS",
-    "TMT",
-    "TND",
-    "TOP",
-    "TRY",
-    "TTD",
-    "TWD",
-    "TZS",
-    "UAH",
-    "UGX",
-    "USD",
-    "USN",
-    "USS",
-    "UYI",
-    "UYU",
-    "UZS",
-    "VEF",
-    "VND",
-    "VUV",
-    "WST",
-    "XAF",
-    "XAG",
-    "XAU",
-    "XBA",
-    "XBB",
-    "XBC",
-    "XBD",
-    "XCD",
-    "XDR",
-    "XFU",
-    "XOF",
-    "XPD",
-    "XPF",
-    "XPT",
-    "XSU",
-    "XTS",
-    "XUA",
-    "YER",
-    "ZAR",
-    "ZMW"
-  ];
 
   String? statusValue;
+  String? regionItem;
 
   String? Source;
-  String? Currencyitem;
   String? owener;
   bool isEmpty = false;
 
   @override
   Widget build(BuildContext context) {
-    Currencyitem = widget.editModel.currency.toString();
-    NameCont.text = widget.editModel.companyName.toString();
-    statusValue = widget.editModel.leadStatusId;
-    owener = widget.editModel.ownerId.toString();
-    Source = widget.editModel.leadSourceId.toString();
-    SourceCont.text = widget.editModel.leadSourceId.toString();
-    AddressCont.text = widget.editModel.address.toString();
-    CityCont.text = widget.editModel.city.toString();
-    StateCont.text = widget.editModel.state.toString();
-    ZipCont.text = widget.editModel.zip.toString();
-    CountryCont.text = widget.editModel.country.toString();
-    PhoneCont.text = widget.editModel.phone.toString();
-    MobileCont.text = widget.editModel.vatNumber.toString();
-    WebsiteCont.text = widget.editModel.website.toString();
-    IndustryCont.text = widget.editModel.currency.toString();
-    NoteCont.text = widget.editModel.note.toString();
+
+    NameCont?.text = widget.editModel.companyName.toString();
+    statusValue = widget.editModel.leadStatusId == ''
+        ? null
+        : widget.editModel.leadStatusId;
+    owener = widget.editModel.ownerId;
+    // regionItem=widget.editModel.address,
+    Source = widget.editModel.leadSourceId == ''
+        ? null
+        : widget.editModel.leadSourceId;
+    SourceCont?.text = widget.editModel.leadSourceId.toString();
+    AddressCont?.text = widget.editModel.address.toString();
+    IndustryCont?.text = widget.editModel.industry.toString();
+
+    regionItem = widget.editModel.region == ''
+        ? null
+        : widget.editModel.region;
+        
+
+
+    PhoneCont?.text = widget.editModel.phone.toString();
+    MobileCont?.text = widget.editModel.vatNumber.toString();
+    WebsiteCont?.text = widget.editModel.website.toString();
+    // IndustryCont?.text = widget.editModel.currency.toString();
+    NoteCont?.text = widget.editModel.note.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -259,11 +85,13 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
         create: (context) => AddLeadCubit(HomeRepoImp())
           ..getOwners()
           ..getLeadStatus()
-          ..getLeadSources(),
+          ..getLeadSources()
+          ..getRegion(),
         child: BlocConsumer<AddLeadCubit, AddLeadState>(
           builder: (context, state) {
             if (AddLeadCubit.get(context).sourceModel.isNotEmpty &&
                 AddLeadCubit.get(context).statusModel.isNotEmpty &&
+                AddLeadCubit.get(context).regionList.isNotEmpty &&
                 AddLeadCubit.get(context).ownerModel.isNotEmpty) {
               return SingleChildScrollView(
                 child: Padding(
@@ -302,57 +130,91 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        Container(
-                          width: double.infinity,
+                        SizedBox(
                           height: 55,
-                          padding: const EdgeInsets.only(
-                            top: 13.76,
-                            left: 17,
-                            right: 16.56,
-                            bottom: 13.24,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFEAEAEA)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(10),
-                              value: statusValue,
-                              isDense: true,
-                              isExpanded: true,
-                              icon: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.grey.withOpacity(.4),
-                              ),
-                              hint: Text(
-                                'Choose Status',
-                                style: StylesData.font14
-                                    .copyWith(color: const Color(0x330D223F)),
-                              ),
-                              style:
+                          width: double.infinity,
+                          child: DropdownSearch<String>(
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle:
                                   StylesData.font14.copyWith(color: kMainColor),
-                              onChanged: (String? value) {
-                                // stateId =
-                                setState(() {
-                                  statusValue = value.toString();
-                                });
-                              },
-                              items: AddLeadCubit.get(context)
-                                  .statusModel
-                                  .map<DropdownMenuItem<String>>(
-                                      (StatusModel? value) {
-                                return DropdownMenuItem<String>(
-                                  value: value?.id.toString(),
-                                  child: Text(value?.title.toString() ?? ''),
-                                );
-                              }).toList(),
+                              dropdownSearchDecoration: InputDecoration(
+                                suffixIconColor: Colors.grey[300],
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: kMainColor),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
                             ),
+                            popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  decoration: InputDecoration(
+                                    hintText: "Choose Status",
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: kMainColor),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    // labelText: 'Password',
+                                  ),
+                                )),
+                            itemAsString: (String u) {
+                              String x = '';
+                              AddLeadCubit.get(context)
+                                  .statusModel
+                                  .forEach((element) {
+                                if (u == element.id) x = element.title!;
+                              });
+                              return x.toString();
+                            },
+                            onChanged: (i) {
+                              print(i);
+                              statusValue = i;
+                              print(i);
+                            },
+                            items: [
+                              ...List.generate(
+                                  AddLeadCubit.get(context).statusModel.length,
+                                  (index) => AddLeadCubit.get(context)
+                                      .statusModel[index]
+                                      .id
+                                      .toString()),
+                            ],
+                            enabled: true,
+                            selectedItem: statusValue,
                           ),
                         ),
                         const SizedBox(
@@ -366,58 +228,90 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        Container(
-                          width: double.infinity,
+                        SizedBox(
                           height: 55,
-                          padding: const EdgeInsets.only(
-                            top: 13.76,
-                            left: 17,
-                            right: 16.56,
-                            bottom: 13.24,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFEAEAEA)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(10),
-                              value: owener,
-                              isDense: true,
-                              isExpanded: true,
-                              icon: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.grey.withOpacity(.4),
-                              ),
-                              hint: Text(
-                                'Choose Owner',
-                                style: StylesData.font14
-                                    .copyWith(color: const Color(0x330D223F)),
-                              ),
-                              style:
+                          width: double.infinity,
+                          child: DropdownSearch<String>(
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle:
                                   StylesData.font14.copyWith(color: kMainColor),
-                              onChanged: (String? value) {
-                                // This is called when the user selects an item.
-
-                                setState(() {
-                                  owener = value!;
-                                });
-                              },
-                              items: AddLeadCubit.get(context)
-                                  .ownerModel
-                                  .map<DropdownMenuItem<String>>(
-                                      (OwenerModel value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.id.toString(),
-                                  child: Text(value.name!),
-                                );
-                              }).toList(),
+                              dropdownSearchDecoration: InputDecoration(
+                                suffixIconColor: Colors.grey[300],
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: kMainColor),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
                             ),
+                            popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  decoration: InputDecoration(
+                                    hintText: "Choose Owner",
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: kMainColor),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    // labelText: 'Password',
+                                  ),
+                                )),
+                            itemAsString: (String u) {
+                              String x = '';
+                              AddLeadCubit.get(context)
+                                  .ownerModel
+                                  .forEach((element) {
+                                if (u == element.id) x = element.name!;
+                              });
+                              return x.toString();
+                            },
+                            onChanged: (i) {
+                              owener = i;
+                              print(i);
+                            },
+                            items: [
+                              ...List.generate(
+                                  AddLeadCubit.get(context).ownerModel.length,
+                                  (index) => AddLeadCubit.get(context)
+                                      .ownerModel[index]
+                                      .id
+                                      .toString()),
+                            ],
+                            enabled: true,
+                            selectedItem: owener,
                           ),
                         ),
                         const SizedBox(
@@ -431,57 +325,92 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        Container(
-                          width: double.infinity,
+                        SizedBox(
                           height: 55,
-                          padding: const EdgeInsets.only(
-                            top: 13.76,
-                            left: 17,
-                            right: 16.56,
-                            bottom: 13.24,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFEAEAEA)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(10),
-                              value: Source,
-                              isDense: true,
-                              isExpanded: true,
-                              icon: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.grey.withOpacity(.4),
-                              ),
-                              hint: Text(
-                                'Choose Source',
-                                style: StylesData.font14
-                                    .copyWith(color: const Color(0x330D223F)),
-                              ),
-                              style:
+                          width: double.infinity,
+                          child: DropdownSearch<String>(
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle:
                                   StylesData.font14.copyWith(color: kMainColor),
-                              onChanged: (String? value) {
-                                // This is called when the user selects an item.
-                                setState(() {
-                                  Source = value!;
-                                });
-                              },
-                              items: AddLeadCubit.get(context)
-                                  .sourceModel
-                                  .map<DropdownMenuItem<String>>(
-                                      (SourceModel value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.id.toString(),
-                                  child: Text(value.title!),
-                                );
-                              }).toList(),
+                              dropdownSearchDecoration: InputDecoration(
+                                suffixIconColor: Colors.grey[300],
+                                hintText: 'Choose Source',
+                                hintStyle: StylesData.font14
+                                    .copyWith(color: const Color(0x330D223F)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: kMainColor),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
                             ),
+                            popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  decoration: InputDecoration(
+                                    hintText: "Choose Source",
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: kMainColor),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    // labelText: 'Password',
+                                  ),
+                                )),
+                            itemAsString: (String u) {
+                              String x = '';
+                              AddLeadCubit.get(context)
+                                  .sourceModel
+                                  .forEach((element) {
+                                if (u == element.id) x = element.title!;
+                              });
+                              return x.toString();
+                            },
+                            onChanged: (i) {
+                              Source = i;
+                            },
+                            items: [
+                              ...List.generate(
+                                  AddLeadCubit.get(context).sourceModel.length,
+                                  (index) => AddLeadCubit.get(context)
+                                      .sourceModel[index]
+                                      .id
+                                      .toString()),
+                            ],
+                            enabled: true,
+                            selectedItem: Source,
                           ),
                         ),
                         const SizedBox(
@@ -495,63 +424,9 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        customTextFormedFiled(
-                            controller: AddressCont,
+                        customTextFiled(
+                            controller: AddressCont!,
                             hintText: 'Write Your Address'),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          "City",
-                          style:
-                              StylesData.font16.copyWith(color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        customTextFormedFiled(
-                            controller: CityCont, hintText: 'Your City'),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          "State",
-                          style:
-                              StylesData.font16.copyWith(color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        customTextFormedFiled(
-                            controller: StateCont, hintText: 'Your State'),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          "Zip",
-                          style:
-                              StylesData.font16.copyWith(color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        customTextFormedFiled(
-                            controller: ZipCont,
-                            hintText: 'Your Zip',
-                            type: TextInputType.number),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          "Country",
-                          style:
-                              StylesData.font16.copyWith(color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        customTextFormedFiled(
-                            controller: CountryCont, hintText: 'Your Country'),
                         const SizedBox(
                           height: 24,
                         ),
@@ -593,11 +468,8 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        customTextFormedFiled(
-                            controller: WebsiteCont, hintText: 'Your Website'),
-                        const SizedBox(
-                          height: 24,
-                        ),
+                        customTextFiled(
+                            controller: WebsiteCont!, hintText: 'Your Website'),
                         const SizedBox(
                           height: 24,
                         ),
@@ -609,13 +481,13 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        customTextFormedFiled(
-                            controller: IndustryCont,
+                        customTextFiled(
+                            controller: IndustryCont!,
                             hintText: 'Your Industry'),
                         const SizedBox(
                           height: 24,
                         ),
-                        Text(
+                      Text(
                           "Region",
                           style:
                               StylesData.font16.copyWith(color: Colors.black),
@@ -623,55 +495,82 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        Container(
-                          width: double.infinity,
+                        SizedBox(
                           height: 55,
-                          padding: const EdgeInsets.only(
-                            top: 13.76,
-                            left: 17,
-                            right: 16.56,
-                            bottom: 13.24,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFFEAEAEA)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(10),
-                              value: Currencyitem,
-                              isDense: true,
-                              isExpanded: true,
-                              icon: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.grey.withOpacity(.4),
-                              ),
-                              hint: Text(
-                                'Choose Region',
-                                style: StylesData.font14
+                          width: double.infinity,
+                          child: DropdownSearch<String>(
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle:
+                                  StylesData.font12.copyWith(color: kMainColor),
+                              dropdownSearchDecoration: InputDecoration(
+                                suffixIconColor: Colors.grey[300],
+                                hintText: 'Choose Region',
+                                hintStyle: StylesData.font14
                                     .copyWith(color: const Color(0x330D223F)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: kMainColor),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Color(0xFFEAEAEA)),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
                               ),
-                              style:
-                                  StylesData.font14.copyWith(color: kMainColor),
-                              onChanged: (String? value) {
-                                // This is called when the user selects an item.
-                                setState(() {
-                                  Currencyitem = value ?? '';
-                                });
-                              },
-                              items: Currency.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
                             ),
+                            popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  decoration: InputDecoration(
+                                    suffixIconColor: Colors.grey[300],
+
+                                    hintText: "Choose Region",
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: kMainColor),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Color(0xFFEAEAEA)),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    // labelText: 'Password',
+                                  ),
+                                )),
+                            itemAsString: (String u) {
+                              return u.toString();
+                            },
+                            onChanged: (i) {
+                              regionItem = i;
+                              print(i);
+                            },
+                            items: AddLeadCubit.get(context).regionList,
+                            enabled: true,
+                            selectedItem: regionItem,
                           ),
                         ),
                         const SizedBox(
@@ -686,7 +585,7 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                           height: 12,
                         ),
                         customTextFiled(
-                            controller: NoteCont,
+                            controller: NoteCont!,
                             hintText: 'Write Note',
                             maxLines: 6),
                         const SizedBox(
@@ -726,29 +625,32 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         defaultButton(
                             fun: () {
                               if (formKey.currentState!.validate()) {
-                                if (Source != null &&
-                                    statusValue != null &&
-                                    Currencyitem != null &&
-                                    owener != null) {
+                                print(statusValue);
+                                print("object");
+                                if (Source != null) {
                                   AddLeadCubit.get(context).addNewLeeds(
-                                      country: CountryCont.text,
-                                      website: WebsiteCont.text,
                                       id: int.parse(
                                           widget.editModel.id.toString()),
-                                      leadName: NameCont.text,
-                                      status: int.parse(statusValue!),
+                                      country: '',
+                                      website: WebsiteCont?.text ?? '',
+                                      leadName: NameCont?.text ?? '',
+                                      status: statusValue != null
+                                          ? int.parse(statusValue!)
+                                          : 0,
                                       owner: int.parse(owener!),
-                                      source: int.parse(Source!),
-                                      address: AddressCont.text,
-                                      city: CityCont.text,
-                                      state: StateCont.text,
-                                      zip: ZipCont.text,
-                                      currency: Currencyitem!,
-                                      phone: PhoneCont.text,
-                                      mobile: MobileCont.text,
-                                      industry: IndustryCont.text,
-                                      region: Currencyitem!,
-                                      note: NoteCont.text);
+                                      source: Source != null
+                                          ? int.parse(Source!)
+                                          : 0,
+                                      address: AddressCont?.text ?? '',
+                                      city: '',
+                                      state: '',
+                                      zip: '',
+                                      currency: '',
+                                      phone: PhoneCont?.text ?? '',
+                                      mobile: MobileCont?.text ?? '',
+                                      industry: IndustryCont?.text ?? '',
+                                      region: regionItem ?? '',
+                                      note: NoteCont?.text ?? '');
                                 } else {
                                   setState(() {
                                     isEmpty = true;

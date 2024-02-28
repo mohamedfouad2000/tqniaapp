@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
+import 'package:tqniaapp/Core/utils/components.dart';
+import 'package:tqniaapp/Core/widgets/pdf_view_widget.dart';
 // ignore: depend_on_referenced_packages
 import 'package:url_launcher/url_launcher.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
@@ -11,13 +13,16 @@ import 'package:tqniaapp/Core/widgets/line_wid.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_ticket_repo/add_ticket_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_state.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class TicketInfoScreenBody extends StatelessWidget {
   const TicketInfoScreenBody({super.key, required this.id});
   final int id;
+  
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController discController = TextEditingController();
     return BlocProvider(
       create: (context) =>
           AddticketCubit(AddTicketRepoImpl())..getTicketById(id: id),
@@ -25,6 +30,8 @@ class TicketInfoScreenBody extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is GetticketByIdSucc) {
+    print(state.model.data?.ticket?.labels);
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -107,9 +114,10 @@ class TicketInfoScreenBody extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18.35),
                         ),
                       ),
-                      child: Text(
-                          state.model.data?.comments?[0].description ??
-                              ''),
+                      child: SingleChildScrollView(
+                        child: Text(
+                            state.model.data?.comments?[0].description ?? ''),
+                      ),
                     ),
                     const SizedBox(
                       height: 24,
@@ -146,8 +154,9 @@ class TicketInfoScreenBody extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    state.model.data?.ticket?.labels?[0].text ??
-                                        '',
+                                    state.model.data!.ticket!.labels!.isNotEmpty ? 
+                                   ( state.model.data?.ticket?.labels?[0].text ??
+                                        '') : '',
                                     style: GoogleFonts.rubik(
                                         textStyle: const TextStyle(
                                       fontSize: 12,
@@ -191,15 +200,49 @@ class TicketInfoScreenBody extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                        // ignore: deprecated_member_use
-                        if (await canLaunch(
-                            '$showFile${state.model.data!.comments![0].files?[0].toString().split('/').last}')) {
-                          // ignore: deprecated_member_use
-                          await launch(
-                              '$showFile${state.model.data!.comments![0].files?[0].toString().split('/').last}');
+                        print(state.model.data?.comments?[0].files?[0]
+                            .toString()
+                            .split('/')
+                            .last
+                            .toString()
+                            .split('.')
+                            .last
+                            .toString());
+                        if (state.model.data?.comments![0].files?[0]
+                                .toString()
+                                .split('/')
+                                .last
+                                .toString()
+                                .split('.')
+                                .last
+                                .toString() ==
+                            'pdf') {
+                          try {
+                            NavegatorPush(
+                                context,
+                                PdfViewWidget(
+                                    link:
+                                        '$showFile${state.model.data?.comments?[0].files?[0].toString().split('/').last}'));
+                          } catch (e) {
+                            urlLauncherFunc(
+                                url:
+                                    '$showFile${state.model.data!.comments?[0].files?[0].toString().split('/').last}');
+                          }
                         } else {
-                          throw 'Could not launch Pdf';
+                          urlLauncherFunc(
+                              url:
+                                  '$showFile${state.model.data?.comments?[0].files?[0].toString().split('/').last}');
                         }
+
+                        // ignore: deprecated_member_use
+                        // if (await canLaunch(
+                        //     '$showFile${state.model.data!.comments![0].files?[0].toString().split('/').last}')) {
+                        //   // ignore: deprecated_member_use
+                        //   await launch(
+                        //       '$showFile${state.model.data!.comments![0].files?[0].toString().split('/').last}');
+                        // } else {
+                        //   throw 'Could not launch Pdf';
+                        // }
                       },
                       child: Container(
                         width: double.infinity,
@@ -229,7 +272,9 @@ class TicketInfoScreenBody extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.model.data?.comments?[0].files != null
+                                    state.model.data?.comments?[0].files
+                                                .toString() !=
+                                            '[]'
                                         ? state.model.data!.comments![0].files
                                             .toString()
                                             .split('/')
@@ -247,7 +292,11 @@ class TicketInfoScreenBody extends StatelessWidget {
                                     height: 3,
                                   ),
                                   Text(
-                                    '200KB',
+                                    state.model.data?.comments?[0].files
+                                                .toString() !=
+                                            '[]'
+                                        ? '200KB'
+                                        : '',
                                     style: GoogleFonts.inter(
                                         textStyle: const TextStyle(
                                       color: Color(0xFF667085),
@@ -286,6 +335,22 @@ class TicketInfoScreenBody extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 13,
+                    ),
+                    customTextFiled(controller: discController, hintText: 'write comment'),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          AddticketCubit.get(context)
+                              .addCommentToTicket(id: id, description: discController.text)
+                              .then((value) {
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: const Text("Add Comment"))
                   ],
                 ),
               ),

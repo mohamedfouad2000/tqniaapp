@@ -50,3 +50,17 @@ final class CreatnewLeadEroor extends AddLeadState {
   final String errorText;
   CreatnewLeadEroor(this.errorText);
 }
+
+final class GetRegionLoading extends AddLeadState {}
+
+final class GetRegionSucc extends AddLeadState {
+  final List<String> regionList;
+
+  GetRegionSucc(this.regionList);
+}
+
+final class GetRegionEroor extends AddLeadState {
+  final String error;
+
+  GetRegionEroor(this.error);
+}

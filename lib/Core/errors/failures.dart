@@ -25,30 +25,31 @@ class ServerFailure extends Failure {
             dio.response!.statusCode!, dio.response!.data);
 
       case DioExceptionType.cancel:
-        return ServerFailure(msq: 'opps There Was An Eroor');
+        return ServerFailure(msq: 'opps There Was An Eroor try Again Later !');
 
       case DioExceptionType.connectionError:
-        return ServerFailure(msq: 'opps There Was An Eroor');
+        return ServerFailure(msq: 'opps There Was An Eroor try Again Later ');
 
       case DioExceptionType.unknown:
         if (dio.message!.contains("SocketException")) {
           return ServerFailure(msq: 'No Internet Connection');
         } else {
-          return ServerFailure(msq: 'opps There Was An Eroor');
+          return ServerFailure(
+              msq: 'opps There Was An Eroor try Again Later !');
         }
       default:
-        return ServerFailure(msq: 'opps There Was An Eroor');
+        return ServerFailure(msq: 'opps There Was An Eroor try Again Later !');
     }
   }
   factory ServerFailure.fromRespo(int statusCode, dynamic respo) {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      return ServerFailure(msq: 'opps There Was An Eroor');
+      return ServerFailure(msq: 'opps There Was An Eroor try Again Later !');
     } else if (statusCode == 404) {
       return ServerFailure(msq: 'Your Request Not Found , Try Later !');
     } else if (statusCode == 500) {
-      return ServerFailure(msq: 'Internet Server Error , Try Later ! ');
+      return ServerFailure(msq: 'Internet Server Error , Try Later !');
     } else {
-      return ServerFailure(msq: 'opps There Was An Eroor');
+      return ServerFailure(msq: 'opps There Was An Eroor try Again Later !');
     }
   }
 }

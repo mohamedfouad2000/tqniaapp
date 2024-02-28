@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
+import 'package:tqniaapp/Core/widgets/empty_wid.dart';
 import 'package:tqniaapp/Core/widgets/faliure_wid.dart';
 import 'package:tqniaapp/Feature/home/data/model/calander_model.dart';
 import 'package:tqniaapp/Feature/home/data/model/metting_model/meeting.dart';
 import 'package:tqniaapp/Feature/home/data/repo/metting%20repo/metting_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_state.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/event_view_page.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/show_calander_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/calander_widget.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/metting_card.dart';
@@ -85,7 +87,6 @@ class _MeetingScreenState extends State<MeetingScreen> {
           isselect: false),
     ];
 
-    // TODO: implement initState
     super.initState();
   }
 
@@ -95,10 +96,11 @@ class _MeetingScreenState extends State<MeetingScreen> {
     return BlocProvider(
       create: (context) => MettingsCubit(MettingRepoImp())
         ..getMetting(
-            start: DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+            start: DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: -30))).toString(),
             end: DateFormat('yyyy-MM-dd')
-                .format(DateTime.now().add(const Duration(days: 40)))
-                .toString()),
+                .format(DateTime.now().add(const Duration(days: 30)))
+                .toString(),
+            isGetDataToday: true),
       child: BlocConsumer<MettingsCubit, MettingsState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -106,8 +108,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
         builder: (context, state) {
           if (state is GetMettingsSucc) {
             if (state.model.data!.meeting!.isEmpty) {
-              return MettingCard();
+              return const MettingCard();
             }
+
             return Padding(
               padding: const EdgeInsets.only(
                   top: 16.0, left: 16, right: 16, bottom: 16),
@@ -124,7 +127,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                           onTap: () async {
                             print("object");
 
-                            NavegatorPush(context, TableMultiExample());
+                            NavegatorPush(context, const TableMultiExample());
                           },
                           child: SizedBox(
                             height: 120,
@@ -148,32 +151,39 @@ class _MeetingScreenState extends State<MeetingScreen> {
                       ],
                     ),
                   ),
-                  SliverList.separated(
-                    itemCount: state.model.data!.meeting!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (state.model.data!.meeting![index].startDate ==
-                          (DateFormat('yyyy-MM-dd')
-                              .format(DateTime.now())
-                              .toString())) {
+                  if (MettingsCubit.get(context).modelToday.isNotEmpty)
+                    SliverList.separated(
+                      itemCount: MettingsCubit.get(context).modelToday.length,
+                      itemBuilder: (BuildContext context, int index) {
                         return meetingItem(
-                            model: state.model.data!.meeting![index]);
-                      } else {
-                        return SizedBox();
-                      }
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(
-                        height: 20,
-                      );
-                    },
-                  )
+                            model: MettingsCubit.get(context).modelToday[index],
+                            context: context);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(
+                          height: 20,
+                        );
+                      },
+                    ),
+                  if (MettingsCubit.get(context).modelToday.isEmpty)
+                    SliverList.separated(
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return const EmptyMettingWidget();
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(
+                          height: 5,
+                        );
+                      },
+                    ),
                 ],
               ),
             );
           } else if (state is GetMettingsfail) {
-            return FailureWidget();
+            return const FailureWidget();
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -181,7 +191,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
   }
 }
 
-Widget meetingItem({required Meeting model}) => Stack(
+Widget meetingItem({required Meeting model, required context}) => Stack(
       alignment: Alignment.bottomCenter,
       children: [
         Padding(
@@ -201,67 +211,60 @@ Widget meetingItem({required Meeting model}) => Stack(
                 width: 35,
               ),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: ShapeDecoration(
-                    color: colorHex(model.color.toString()),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.51),
+                child: InkWell(
+                  onTap: () {
+                    NavegatorPush(context, EventView(id: int.parse(model.id.toString())));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: ShapeDecoration(
+                      color: colorHex(model.color.toString()),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.51),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(model.title.toString()),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              model.companyName ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.title.toString(),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                model.companyName ?? '',
+                                maxLines: 1,
+                                style: const TextStyle(color: Colors.white),
+                                overflow: TextOverflow.clip,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 11,
-                          ),
-                          const Text('•'),
-                          const SizedBox(
-                            width: 11,
-                          ),
-                          Text(int.parse(model.endTime!.substring(0, 2)) -
-                                      int.parse(
-                                          model.startTime!.substring(0, 2)) ==
-                                  0
-                              ? '${int.parse(model.endTime!.substring(0, 2)) - int.parse(model.startTime!.substring(0, 2))} hour'
-                              : ''),
-                        ],
-                      )
-                    ],
+                            const SizedBox(
+                              width: 11,
+                            ),
+                            const Text(
+                              '•',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              width: 11,
+                            ),
+                            Text(int.parse(model.endTime!.substring(0, 2)) -
+                                        int.parse(
+                                            model.startTime!.substring(0, 2)) >=
+                                    0
+                                ? '${int.parse(model.endTime!.substring(0, 2)) - int.parse(model.startTime!.substring(0, 2))} hour'
+                                : ''),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ), //12-15-10
               ),
             ],
           ),
         ),
-        // if (model.isNow)
-        // Padding(
-        //   padding: const EdgeInsets.only(left: 45),
-        //   child: Row(
-        //     children: [
-        //       const CircleAvatar(
-        //         radius: 4.7,
-        //         backgroundColor: Color(0xFF292932),
-        //       ),
-        //       Expanded(
-        //         child: Container(
-        //           height: 2.3,
-        //           // width: double.infinity,
-        //           color: const Color(0xFF292932),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // )
       ],
     );

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tqniaapp/Core/utils/assets_data.dart';
-import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Core/widgets/faliure_wid.dart';
@@ -40,7 +39,7 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
               fontSize: 18.0);
         }
         if (state is DeleteNotificationByIdSucc) {
-          Nav(context, HomeView());
+          Nav(context, const HomeView());
           Fluttertoast.showToast(
               msg: state.txt.toString(),
               toastLength: Toast.LENGTH_SHORT,
@@ -51,7 +50,7 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
               fontSize: 18.0);
         }
         if (state is DeleteNotificationByIderoor) {
-          Nav(context, HomeView());
+          Nav(context, const HomeView());
           Fluttertoast.showToast(
               msg: state.errormsq.toString(),
               toastLength: Toast.LENGTH_SHORT,
@@ -66,7 +65,7 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
         if (state is getNotificatSucc) {
           if (state.model.data!.notifications!.isEmpty) {
             return const Center(
-              child: Text("Empty List"),
+              child: Text("Notification Empty"),
             );
           }
           return Padding(
@@ -96,7 +95,7 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
                               width: 8,
                             ),
                             Text(
-                              "Mask as read all",
+                              "Make all as read",
                               style: StylesData.font12
                                   .copyWith(color: const Color(0xFFA29EB6)),
                             ),
@@ -104,147 +103,44 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
                         ),
                       ),
                       const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          NotificationCubit.get(context)
-                              .deleteNotificationById(id: 0)
-                              .then((value) {
-                            Nav(context, HomeView());
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              "Delete all",
-                              style:
-                                  StylesData.font12.copyWith(color: kMainColor),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            ImageIcon(
-                              const AssetImage(
-                                AssetsData.delete,
-                              ),
-                              size: 24,
-                              color: kMainColor,
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Expanded(
                     child: ListView.separated(
                         itemBuilder: (context, index) {
                           return Slidable(
-                            key: ValueKey(int.parse(
-                                state.model.data!.notifications![index].id!)),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Container(
-                                  // width: 73.20,
-                                  // height: 91.50,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 20),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(18.30),
-                                    ),
-                                    shadows: const [
-                                      BoxShadow(
-                                        color: Color(0x11EA5A5A),
-                                        blurRadius: 62.86,
-                                        offset: Offset(14.61, 18.65),
-                                        spreadRadius: 0,
-                                      )
-                                    ],
-                                  ),
-                                  child: const ImageIcon(
-                                    AssetImage(AssetsData.share),
-                                    size: 27,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    NotificationCubit.get(context)
-                                        .deleteNotificationById(
-                                            id: int.parse(state.model.data!
-                                                .notifications![index].id!))
-                                        .then((value) {});
-                                  },
-                                  child: Container(
-                                    // width: 73.20,
-                                    // height: 91.50,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 20),
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: ShapeDecoration(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.30),
-                                      ),
-                                      shadows: const [
-                                        BoxShadow(
-                                          color: Color(0x11EA5A5A),
-                                          blurRadius: 62.86,
-                                          offset: Offset(14.61, 18.65),
-                                          spreadRadius: 0,
-                                        ),
-                                      ],
-                                    ),
-                                    child: ImageIcon(
-                                      const AssetImage(AssetsData.delete),
-                                      size: 27,
-                                      color: kMainColor,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                              ],
-                            ),
-                            child: TaskName(
-                              projectTitle: state.model.data!
-                                  .notifications![index].projectTitle
-                                  .toString(),
-                              image: state
-                                  .model.data!.notifications![index].userImage
-                                  .toString(),
-                              isread: int.parse(state
-                                  .model.data!.notifications![index].isRead
-                                  .toString()),
-                              date: state
-                                  .model.data!.notifications![index].createdAt
-                                  .toString(),
-                              istask: false,
-                              title: state
-                                  .model.data!.notifications![index].userName!
-                                  .toString(),
-                              subTitle: state
-                                  .model.data!.notifications![index].event
-                                  .toString(),
-                              taskId: state
-                                  .model.data!.notifications![index].taskId
-                                  .toString(),
-                              model: state.model.data!.notifications![index],
-                            ),
-                          );
+                              key: ValueKey(
+                                int.parse(state
+                                    .model.data!.notifications![index].id!),
+                              ),
+                              child: TaskName(
+                                id: state.model.data!.notifications![index].id
+                                    .toString(),
+                                title: state
+                                    .model.data!.notifications![index].title
+                                    .toString(),
+                                body: state
+                                    .model.data!.notifications![index].body
+                                    .toString(),
+                                modelId: state
+                                    .model.data!.notifications![index].modelId
+                                    .toString(),
+                                modelType: state
+                                    .model.data!.notifications![index].modelType
+                                    .toString(),
+                                userId: state
+                                    .model.data!.notifications![index].userId
+                                    .toString(),
+                                isRead: state
+                                    .model.data!.notifications![index].isRead
+                                    .toString(),
+                                createdAt: state
+                                    .model.data!.notifications![index].createdAt
+                                    .toString(),
+                              ));
                         },
                         separatorBuilder: (context, index) {
                           return const SizedBox(

@@ -82,7 +82,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                 textColor: Colors.white,
                 fontSize: 18.0);
 
-            Nav(context, HomeView());
+            Nav(context, const HomeView());
           } else if (state is UpdateUserDataFailure) {
             Fluttertoast.showToast(
                 msg: state.ErrorMsq.toString(),
@@ -101,7 +101,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-            Nav(context, HomeView());
+            Nav(context, const HomeView());
           } else if (state is UpdateUserImageFailure) {
             Fluttertoast.showToast(
                 msg: state.ErrorMsq.toString(),
@@ -127,10 +127,10 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                         onTap: () {
                           var x = AlertDialog(
                             surfaceTintColor: Colors.white,
-                            title: Text(
+                            title: const Text(
                               "Choose Your Photo",
                             ),
-                            content: Container(
+                            content: SizedBox(
                               height: 140,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,9 +139,11 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                                   Container(
                                       height: 50,
                                       width: double.infinity,
-                                      color: Theme.of(context).backgroundColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
                                       child: TextButton.icon(
-                                          label: Text(
+                                          label: const Text(
                                             "Gallary",
                                             style:
                                                 TextStyle(color: Colors.black),
@@ -151,19 +153,21 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                                                 i: ImageSource.gallery);
                                             Navigator.pop(context);
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.storage_outlined,
                                             color: Colors.black,
                                           ))),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   Container(
                                       height: 50,
                                       width: double.infinity,
-                                      color: Theme.of(context).backgroundColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
                                       child: TextButton.icon(
-                                          label: Text(
+                                          label: const Text(
                                             "camera",
                                             style:
                                                 TextStyle(color: Colors.black),
@@ -173,7 +177,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                                                 i: ImageSource.camera);
                                             Navigator.pop(context);
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.camera_alt_outlined,
                                             color: Colors.black,
                                           ))),
@@ -215,7 +219,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                                             BorderRadius.circular(10)),
                                     child: Image.file(file!),
                                   ),
-                            Image(
+                            const Image(
                               image: AssetImage(AssetsData.showshow),
                               width: 32,
                               height: 32,
@@ -236,7 +240,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                                 .then((value) {});
                           },
                           textWidget: state is UpdateUserImageLoading
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
@@ -541,7 +545,7 @@ class _EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                           // NavegatorPush(context, const TicketInfoScreen());
                         },
                         textWidget: state is UpdateUserDataLoading
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
                                 ),

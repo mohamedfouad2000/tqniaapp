@@ -43,10 +43,14 @@ abstract class HomeRepo {
   Future<Either<Failure, List<StatusModel>>> getLeadStatus();
   Future<Either<Failure, List<SourceModel>>> getLeadSources();
   Future<Either<Failure, List<OwenerModel>>> getOwners();
-  Future<Either<Failure, LeadModel>> getHomeLeads();
+  Future<Either<Failure, LeadModel>> getHomeLeads(
+    {required String status,
+      required String source,
+      required String search,
+      required String date}
+  );
 
   Future<Either<Failure, Lead>> geLeadById({required int id});
   Future<Either<Failure, String>> delateLead({required int id});
-
-//
+  Future<Either<Failure, List<String>>> getRegion();
 }

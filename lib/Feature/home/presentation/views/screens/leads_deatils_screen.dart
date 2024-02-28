@@ -15,9 +15,11 @@ import 'package:tqniaapp/Feature/home/presentation/manager/Leads%20Info/leads_in
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_state.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/add_meeting_lead_form.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/calles_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/edit_lead_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/lead_info_screen.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/meeting_lead_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/meeting_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/notes_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/tickets_screen.dart';
@@ -85,7 +87,7 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                     enabled: true,
                     surfaceTintColor: Colors.white,
                     constraints:
-                        const BoxConstraints.expand(width: 60.14, height: 150),
+                        const BoxConstraints.expand(width: 60.14, height: 75),
                     itemBuilder: (context) {
                       return [
                         PopupMenuItem(
@@ -118,37 +120,37 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                             ),
                           ),
                         ),
-                        PopupMenuItem(
-                          padding: EdgeInsets.zero,
-                          onTap: () {
-                            LeadsInfoCubit.get(context)
-                                .delateleadById(id: widget.id)
-                                .then((value) {});
-                          },
-                          child: Center(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircleAvatar(
-                                  radius: 29,
-                                  backgroundColor:
-                                      const Color(0xFF040415).withOpacity(0.10),
-                                ),
-                                const CircleAvatar(
-                                  radius: 26,
-                                  backgroundColor: Color(0xFFFF0000),
-                                  child: Center(
-                                    child: Image(
-                                      image: AssetImage(AssetsData.newDelete),
-                                      width: 30.08,
-                                      height: 30.08,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // PopupMenuItem(
+                        //   padding: EdgeInsets.zero,
+                        //   onTap: () {
+                        //     LeadsInfoCubit.get(context)
+                        //         .delateleadById(id: widget.id)
+                        //         .then((value) {});
+                        //   },
+                        //   child: Center(
+                        //     child: Stack(
+                        //       alignment: Alignment.center,
+                        //       children: [
+                        //         CircleAvatar(
+                        //           radius: 29,
+                        //           backgroundColor:
+                        //               const Color(0xFF040415).withOpacity(0.10),
+                        //         ),
+                        //         const CircleAvatar(
+                        //           radius: 26,
+                        //           backgroundColor: Color(0xFFFF0000),
+                        //           child: Center(
+                        //             child: Image(
+                        //               image: AssetImage(AssetsData.newDelete),
+                        //               width: 30.08,
+                        //               height: 30.08,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ];
                     },
                     padding: EdgeInsets.zero,
@@ -219,7 +221,7 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                         listener: (context, state) {
                           if (state is CheckPermisionFailuire) {
                             if (state.errorMsq == 'forbidden please login') {
-                              Nav(context, LoginView());
+                              Nav(context, const LoginView());
                             }
                           }
                         },
@@ -235,7 +237,8 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                               child: Text(state.errorMsq.toString()),
                             );
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
                         },
                       ),
@@ -284,7 +287,9 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                         height: SizeConfig.screenHeight!,
                         child:
                             const SingleChildScrollView(child: AddNotesForm())),
-                  );
+                  ).whenComplete(() {
+                    print("object");
+                  });
                 },
                 child: Stack(
                   alignment: Alignment.center,
@@ -373,7 +378,7 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                     builder: (context) => Container(
                         color: Colors.white,
                         child: const SingleChildScrollView(
-                            child: AddMeetingForm())),
+                            child: AddMeetingLeadForm())),
                   );
                 },
                 child: Stack(
@@ -461,9 +466,9 @@ class _LeedsDetilesState extends State<LeedsDetiles>
               children: [
                 LeadInfoScreen(id: widget.id),
                 const TicketsScreen(),
-                NotesScreen(),
-                CallesScreen(),
-                const MeetingScreen(),
+                const NotesScreen(),
+                const CallesScreen(),
+                const MettingLeadScreen(),
               ],
             ))
           ],

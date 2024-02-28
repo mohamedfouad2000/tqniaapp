@@ -39,20 +39,21 @@ class HomeRepoImp extends HomeRepo {
           'token': TOKEN,
           'id': id,
           'name': leadName,
+          'custom_field_15':industry,
           'company_name': leadName,
           'phone': int.parse(phone),
           'address': address,
-          'region': region,
+          'custom_field_5': region,
           'city': city,
           'custom_field_1': note,
           'country': country,
-          'state': state,
+          'state': state == 0 ? '' : state,
           'zip': zip,
           'website': website,
           'currency': currency,
           'owner_id': owner,
           'lead_status_id': status,
-          'lead_source_id': source,
+          'lead_source_id': source == 0 ? '' : source,
           'vat_number': mobile,
         }),
       );
@@ -157,13 +158,24 @@ class HomeRepoImp extends HomeRepo {
   }
 
   @override
-  Future<Either<Failure, LeadModel>> getHomeLeads() async {
+  Future<Either<Failure, LeadModel>> getHomeLeads(
+      {required String status,
+      required String search,
+      required String source,
+      required String date}) async {
     try {
       LeadModel model;
       print('siu');
-      Response<dynamic> res = await DioHelper.getData(
-          url: getListLeadEndPoint,
-          query: {'token': TOKEN, 'limit': 10, 'skip': 20});
+      Response<dynamic> res =
+          await DioHelper.getData(url: getListLeadEndPoint, query: {
+        'token': TOKEN,
+        'limit': 35,
+        'skip': 0,
+        'status': status,
+        'date_types': date,
+        'source': source,
+        'search_by':search
+      });
       if (res.data['status'] == 200) {
         model = LeadModel.fromJson(res.data);
         return right(model);
@@ -321,6 +333,33 @@ class HomeRepoImp extends HomeRepo {
       if (e is DioException) {
         print('//////////////////');
 
+        return left(ServerFailure.fromDioError(e));
+      }
+
+      return left(ServerFailure(msq: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> getRegion() async {
+    try {
+      List<String> list = [];
+
+      Response<dynamic> res = await DioHelper.getData(
+        url: getRegionEndPoint,
+      );
+      print(res.data);
+      if (res.data['status'] == 200) {
+        for (var i = 0; i < res.data['data'].length; i++) {
+          list.add(res.data['data'][i].toString());
+        }
+
+        return right(list);
+      } else {
+        return left(ServerFailure(msq: res.data['message']));
+      }
+    } catch (e) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }
 

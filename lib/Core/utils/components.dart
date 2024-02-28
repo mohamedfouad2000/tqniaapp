@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Widget defaultButton({
   required VoidCallback fun,
@@ -41,6 +43,7 @@ Widget customTextFiled(
         var ontapFun,
         String? hintText,
         bool enabled = true,
+        Function(String)? onChanged,
         double rad = 10,
         int maxLines = 1}) =>
     TextField(
@@ -51,6 +54,7 @@ Widget customTextFiled(
         ontapFun;
       },
       maxLines: maxLines,
+      onChanged: onChanged ,
       keyboardType: type,
       style: StylesData.font14.copyWith(color: kMainColor),
       decoration: InputDecoration(
@@ -144,18 +148,6 @@ Widget customTextFormedFiled({
       ),
     );
 
-// void showToast({
-//   required msg,
-// }) =>
-//     Fluttertoast.showToast(
-//         msg: msg,
-//         toastLength: Toast.LENGTH_LONG,
-//         gravity: ToastGravity.BOTTOM,
-//         timeInSecForIosWeb: 1,
-//         backgroundColor: kMainColor,
-//         textColor: Colors.white,
-//         fontSize: 16.0);
-
 NavegatorPush(context, page) {
   return Navigator.push(
     context,
@@ -170,7 +162,7 @@ Nav(context, page) {
 
 Color colorHex(String color) {
   print(color);
-  if (color == '' || color =='null') {
+  if (color == '' || color == 'null') {
     return kMainColor;
   }
   return Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000);
@@ -191,5 +183,50 @@ String showImageFun({required String image}) {
     return ('${showImageurl}_${str.substring(startIndex + start.length, endIndex)}');
   } else {
     return 'https://system.tqnia.me/assets/images/avatar.jpg';
+  }
+}
+
+Future<void> urlLauncherFunc({required String url}) async {
+  if (await canLaunch(url)) {
+    final Uri url0 = Uri.parse(url);
+    await launchUrl(
+      url0,
+      mode: LaunchMode.platformDefault,
+    );
+  } else {
+    Fluttertoast.showToast(
+        msg: 'Could not launch $url',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: kMainColor,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    throw 'Could not launch $url';
+  }
+}
+
+openDialPad(String phoneNumber) async {
+  Uri url = Uri(scheme: "tel", path: phoneNumber);
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    print("Can't open dial pad.");
+  }
+}
+
+Color getStatusColor(String? status) {
+  if (status == null) {
+    return Colors.blue;
+  } else {
+    if (status == 'open') {
+      return const Color(0xff83c340);
+    } else if (status == 'new') {
+      return const Color(0xffffc107);
+    } else if (status == 'inprogress') {
+      return Colors.redAccent;
+    } else {
+      return Colors.grey;
+    }
   }
 }

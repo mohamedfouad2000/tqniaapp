@@ -64,7 +64,7 @@ class LeedFullWidget extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: Text(model.city ?? '',
+                  child: Text(model.sourceTitle ?? '',
                       style: GoogleFonts.rubik(
                         textStyle: const TextStyle(
                           color: Colors.white,
@@ -78,6 +78,7 @@ class LeedFullWidget extends StatelessWidget {
                 width: 12,
               ),
               Container(
+                
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.05, vertical: 4.19),
                 decoration: ShapeDecoration(
@@ -89,7 +90,9 @@ class LeedFullWidget extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: Text(model.state ?? '',
+                  child: Text(model.region ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.rubik(
                         textStyle: TextStyle(
                           color: colorHex(model.leadStatusColor ?? ''),
@@ -107,7 +110,7 @@ class LeedFullWidget extends StatelessWidget {
           SizedBox(
             width: SizeConfig.screenWidth! * .77,
             child: Text(
-              '${model.currency}',
+              '${model.note}',
               style: StylesData.font8,
             ),
           ),

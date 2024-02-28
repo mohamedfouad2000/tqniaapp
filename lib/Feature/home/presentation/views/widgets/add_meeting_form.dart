@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
@@ -42,6 +43,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
   String? enddate;
   String? StartTime;
   String? endTime;
+  bool iscolor = false;
   Color? colorvalue;
   bool isEmpty = false;
   Color? colorChoose = Colors.black;
@@ -63,7 +65,9 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-            Nav(context, const HomeView());
+               
+              
+           Nav(context, const HomeView());
           } else if (state is AddMettingfail) {
             Fluttertoast.showToast(
                 msg: state.errormsq.toString(),
@@ -77,6 +81,12 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
         },
         builder: (context, state) {
           if (state is getAllClientsSucc) {
+            if (!iscolor) {
+              iscolor = !iscolor;
+              colorChoose =
+                  colorHex(MettingsCubit.get(context).commonColor ?? '');
+            }
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -125,7 +135,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                     const SizedBox(
                       height: 12,
                     ),
-                    customTextFormedFiled(
+                    customTextFiled(
                       controller: labelcont,
                       hintText: 'Enter Label',
                     ),
@@ -172,10 +182,11 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                       children: [
                         InkWell(
                           onTap: () {
+                            String? statusValue;
+
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  String? statusValue;
                                   return AlertDialog(
                                     surfaceTintColor: Colors.white,
                                     title: const Text(
@@ -190,71 +201,124 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Container(
-                                              width: double.infinity,
+                                            SizedBox(
                                               height: 55,
-                                              padding: const EdgeInsets.only(
-                                                top: 13.76,
-                                                left: 17,
-                                                right: 16.56,
-                                                bottom: 13.24,
-                                              ),
-                                              clipBehavior: Clip.antiAlias,
-                                              decoration: ShapeDecoration(
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  side: const BorderSide(
-                                                      width: 1,
-                                                      color: Color(0xFFEAEAEA)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                child: DropdownButton<String>(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  value: statusValue,
-                                                  isDense: true,
-                                                  isExpanded: true,
-                                                  icon: Icon(
-                                                    Icons.arrow_downward,
-                                                    color: Colors.grey
-                                                        .withOpacity(.4),
-                                                  ),
-                                                  hint: Text(
-                                                    'Choose Person',
-                                                    style: StylesData.font14
-                                                        .copyWith(
-                                                            color: const Color(
-                                                                0x330D223F)),
-                                                  ),
-                                                  style: StylesData.font14
+                                              width: double.infinity,
+                                              child: DropdownSearch<String>(
+                                                dropdownDecoratorProps:
+                                                    DropDownDecoratorProps(
+                                                  baseStyle: StylesData.font14
                                                       .copyWith(
                                                           color: kMainColor),
-                                                  onChanged: (String? value) {
-                                                    // stateId =
-                                                    setState(() {
-                                                      print(value);
-                                                      statusValue =
-                                                          value.toString();
-                                                    });
-                                                  },
-                                                  items: state.Model.data!.map<
-                                                          DropdownMenuItem<
-                                                              String>>(
-                                                      (Datum? value) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value:
-                                                          value?.id.toString(),
-                                                      child: Text(value?.name
-                                                              .toString() ??
-                                                          ''),
-                                                    );
-                                                  }).toList(),
+                                                  dropdownSearchDecoration:
+                                                      InputDecoration(
+                                                    suffixIconColor:
+                                                        Colors.grey[300],
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          width: 1,
+                                                          color: kMainColor),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                    ),
+                                                    border:
+                                                        const OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          width: 1,
+                                                          color: Color(
+                                                              0xFFEAEAEA)),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        const OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          width: 1,
+                                                          color: Color(
+                                                              0xFFEAEAEA)),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
+                                                popupProps: PopupProps.menu(
+                                                    showSearchBox: true,
+                                                    searchFieldProps:
+                                                        TextFieldProps(
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            "Choose Person",
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color:
+                                                                  kMainColor),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        border:
+                                                            const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFFEAEAEA)),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        enabledBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFFEAEAEA)),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        // labelText: 'Password',
+                                                      ),
+                                                    )),
+                                                itemAsString: (String u) {
+                                                  String x = '';
+                                                  state.Model.data
+                                                      ?.forEach((element) {
+                                                    if (u == element.id) {
+                                                      x = element.name!;
+                                                    }
+                                                  });
+                                                  return x.toString();
+                                                },
+                                                onChanged: (i) {
+                                                  print(i);
+                                                  statusValue = i;
+                                                },
+                                                items: [
+                                                  ...List.generate(
+                                                      state.Model.data
+                                                              ?.length ??
+                                                          0,
+                                                      (index) => state
+                                                          .Model.data![index].id
+                                                          .toString()),
+                                                ],
+                                                enabled: true,
+                                                selectedItem: statusValue,
                                               ),
                                             ),
                                             const SizedBox(
@@ -307,6 +371,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                                 }).whenComplete(() {
                               setState(() {
                                 list2 = {...list!};
+                                list = list2!.toList();
                               });
                             });
                           },
@@ -330,43 +395,130 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                           width: 16,
                         ),
                         Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  list2!.elementAt(index);
-                                  return ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(1000000),
-                                    child: CachedNetworkImage(
-                                      height: 50,
-                                      width: 50,
-                                      imageUrl: list2!.elementAt(index).image ==
-                                              null
-                                          ? 'https://system.tqnia.me/assets/images/avatar.jpg'
-                                          : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
-                                      placeholder: (context, url) =>
-                                          LoadingAnimationWidget.newtonCradle(
-                                        size: 50,
-                                        color: Colors.grey,
-                                      ),
-                                      errorWidget: (context, url, er) =>
-                                          Container(
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
+                          child: InkWell(
+                            onTap: () {
+                              if (list2!.isNotEmpty) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        surfaceTintColor: Colors.white,
+                                        title: const Text(
+                                          "people in Mettings",
+                                        ),
+                                        content: StatefulBuilder(builder:
+                                            (BuildContext context,
+                                                StateSetter setState) {
+                                          return Container(
+                                            height: 120,
+                                            color: Colors.white,
+                                            child: ListView.builder(
+                                              itemCount: list2?.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  title: Text(list2!
+                                                      .elementAt(index)
+                                                      .name
+                                                      .toString()),
+                                                  trailing: IconButton(
+                                                      onPressed: () {
+                                                        print(list2!
+                                                            .elementAt(index)
+                                                            .name
+                                                            .toString());
+                                                        // list!.remove(index);
+                                                        list2!.remove(list2!
+                                                            .elementAt(index));
+                                                        // print(list2!.elementAt(index).name.toString());
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.delete)),
+                                                  leading: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1000000),
+                                                    child: CachedNetworkImage(
+                                                      height: 24,
+                                                      width: 24,
+                                                      imageUrl: list2!
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .image ==
+                                                              null
+                                                          ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                                          : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          LoadingAnimationWidget
+                                                              .newtonCradle(
+                                                        size: 50,
+                                                        color: Colors.grey,
+                                                      ),
+                                                      errorWidget:
+                                                          (context, url, er) =>
+                                                              Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        }),
+                                      );
+                                    }).whenComplete(() => setState(() {
+                                      list2;
+                                      list = list2!.toList();
+                                    }));
+                              }
+                            },
+                            child: SizedBox(
+                              height: 50,
+                              child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    list2!.elementAt(index);
+                                    return ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(1000000),
+                                      child: CachedNetworkImage(
+                                        height: 50,
+                                        width: 50,
+                                        imageUrl: list2!
+                                                    .elementAt(index)
+                                                    .image ==
+                                                null
+                                            ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                            : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                                        placeholder: (context, url) =>
+                                            LoadingAnimationWidget.newtonCradle(
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                        errorWidget: (context, url, er) =>
+                                            Container(
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    width: 5,
-                                  );
-                                },
-                                itemCount: list2?.length ?? 0),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(
+                                      width: 5,
+                                    );
+                                  },
+                                  itemCount: list2?.length ?? 0),
+                            ),
                           ),
                         )
                       ],
@@ -396,63 +548,35 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                     ),
                     Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              colorChoose = const Color(0xFFFF0091);
-                            });
-                          },
-                          child: Container(
-                            width: 44,
+                        Expanded(
+                          child: SizedBox(
                             height: 44,
-                            decoration: ShapeDecoration(
-                              color: const Color(0xFFFF0091),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              colorChoose =
-                                  const Color.fromARGB(255, 45, 0, 150);
-                            });
-                          },
-                          child: Container(
-                            width: 44,
-                            height: 44,
-                            decoration: ShapeDecoration(
-                              color: const Color.fromARGB(255, 45, 0, 150),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              colorChoose =
-                                  const Color.fromARGB(255, 12, 139, 0);
-                            });
-                          },
-                          child: Container(
-                            width: 44,
-                            height: 44,
-                            decoration: ShapeDecoration(
-                              color: const Color.fromARGB(255, 12, 139, 0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) => InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          colorChoose =
+                                              colorHex(colorList[index]);
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: ShapeDecoration(
+                                          color: colorHex(colorList[index]),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                itemCount: colorList.length),
                           ),
                         ),
                         const SizedBox(
@@ -506,7 +630,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                                           onPressed: () {
                                             Navigator.pop(context);
                                             setState(() {
-                                              colorvalue;
+                                              colorvalue ??= Colors.blue;
                                               colorChoose = colorvalue;
                                             });
                                           },
@@ -584,6 +708,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                               });
                               MettingsCubit.get(context).addMetting(
                                   shareWith: x,
+                                  
                                   title: TittleCont.text,
                                   description: DescriptionCont.text,
                                   labels: labelcont.text,
@@ -622,7 +747,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                                   )
                                 ],
                               ),
-                        c: kMainColor)
+                        c: kMainColor),
                   ],
                 ),
               ),
@@ -701,9 +826,7 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                       ),
                     ),
                     Text(
-                      Startdate != null ? Startdate! : ' add Date',
-                      maxLines: 1,
-                      overflow: TextOverflow.fade,
+                      Startdate != null ? Startdate! : 'Tab Here to add Date',
                       style: StylesData.font10.copyWith(
                         color: const Color(0xFFA29EB6),
                       ),
@@ -757,40 +880,40 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                       //2024-02-07 09:01:12
                       endTime = '${pickedTime.hour}:${pickedTime.minute}';
                     }
-                    //pickedDate output format => 2021-03-10 00:00:00.000
+                    print(
+                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                     String formattedDate =
                         DateFormat('yyyy-MM-dd').format(pickedDate);
-                    //formatted date output using intl package =>  2021-03-16
+                    print(
+                        formattedDate); //formatted date output using intl package =>  2021-03-16
                     setState(() {
                       enddate = formattedDate;
                     });
                     //set output date to TextField value.
                   } else {}
                 },
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "End Date",
-                        style: StylesData.font12.copyWith(
-                          color: const Color(0xFF0D223F),
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "End Date",
+                      style: StylesData.font12.copyWith(
+                        color: const Color(0xFF0D223F),
                       ),
-                      Text(
-                        enddate != null ? enddate! : ' add Date',
-                        style: StylesData.font10.copyWith(
-                          color: const Color(0xFFA29EB6),
-                        ),
+                    ),
+                    Text(
+                      enddate != null ? enddate! : 'Tab Here to add Date',
+                      style: StylesData.font10.copyWith(
+                        color: const Color(0xFFA29EB6),
                       ),
-                      Text(
-                        endTime != null ? endTime! : '',
-                        style: StylesData.font10.copyWith(
-                          color: const Color(0xFFA29EB6),
-                        ),
+                    ),
+                    Text(
+                      endTime != null ? endTime! : '',
+                      style: StylesData.font10.copyWith(
+                        color: const Color(0xFFA29EB6),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -800,3 +923,88 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
     );
   }
 }
+
+List<String> colorList = [
+  "#83c340",
+  "#29c2c2",
+  "#2d9cdb",
+  "#aab7b7",
+  "#f1c40f",
+  "#e18a00",
+  "#e74c3c",
+  "#d43480",
+  "#ad159e",
+  "#37b4e1",
+  "#34495e",
+  "#dbadff",
+  "#3498db",
+  "#8e44ad",
+  "#c0392b",
+  "#16a085",
+  "#f39c12",
+  "#d35400",
+  "#7f8c8d",
+  "#2ecc71",
+  "#ff6f61",
+  "#6a0572",
+  "#00bcd4",
+  "#ff4081",
+  "#ffbb00",
+  "#4caf50",
+  "#FF5733",
+  "#ff5252",
+  "#33E2FF",
+  "#e040fb",
+  "#E1FF33",
+  "#795548",
+  "#FF338F",
+  "#673ab7",
+  "#ff9800",
+  "#9c27b0",
+  "#ffeb3b",
+  "#33FFC1",
+  "#009688",
+  "#795548",
+  "#f44336",
+  "#e91e63",
+  "#9c27b0",
+  "#673ab7",
+  "#7C33FF",
+  "#FF33AA",
+  "#6AFF33",
+  "#00bcd4",
+  "#009688",
+  "#4caf50",
+  "#8bc34a",
+  "#cddc39",
+  "#33FF57",
+  "#ffc107",
+  "#ff9800",
+  "#FF33BE",
+  "#795548",
+  "#FF336E",
+  "#9e9e9e",
+  "#C133FF",
+  "#3f51b5",
+  "#8533FF",
+  "#5733FF",
+  "#00bcd4",
+  "#009688",
+  "#4caf50",
+  "#8bc34a",
+  "#cddc39",
+  "#FF33B7",
+  "#ffc107",
+  "#ff9800",
+  "#ff0000",
+  "#795548",
+  "#33A8FF",
+  "#9e9e9e",
+  "#FFBD33",
+  "#9c27b0",
+  "#673ab7",
+  "#B333FF",
+  "#2196f3",
+  "#ffffff",
+  "#000000"
+];

@@ -3,6 +3,8 @@ import 'package:tqniaapp/Feature/home/data/model/metting_model/metting_model.dar
 
 String? TOKEN;
 String? USERID;
+String? USERNAME;
+
 Lead? editModel;
 MettingModel? METTINGS;
 
@@ -35,17 +37,25 @@ const AddcallEndPoint = 'ApiCalls/save';
 const getCallsEndPoint = 'ApiCalls/getCalls';
 const DeleteLeadEndPoint = 'ApiLeads/delete';
 const getNotificationEndPoint = 'ApiNotifications/get_all_notifications';
-const getNotificationCountEndPoint = 'ApiNotifications/count_notifications';
+const getNotificationCountEndPoint = 'ApiNotifications/getCount';
 const showImageurl = 'https://system.tqnia.me/files/profile_images/';
 const showProfileImage = 'https://system.tqnia.me/';
 const checkPermisionEndPoint = 'ApiTickets/hasPermission';
+const getRegionEndPoint = 'ApiLeads/getRegion';
+
 const editProfileEndPoint = 'ApiProfile/editProfile';
 const UpdateProfileimageEndPoint = 'ApiProfile/UpdateProfileImage';
 const ApiGetAllEventEndPoint = 'ApiEvents/get_all_events';
 const CreateEventEndPoint = 'ApiEvents/save';
+const saveEventStatusEndPoint = 'ApiEvents/saveEventStatus';
 const deleteNotificationEndPoint = 'ApiNotifications/delete';
 const getallcontactsEndPoint = 'ApiEvents/get_all_contacts_of_client';
+const getCommonColorEndPoint = 'ApiEvents/getCommonColor';
+const getMeetingByIdEndPoint = 'ApiEvents/getById';
+
+
 const showFile = 'https://system.tqnia.me/files/timeline_files/';
+const addCommentToTicketEndPoint='ApiTickets/addComment';
 
 const setNotificationAsReedEndPoint =
     'ApiNotifications/set_notification_status_as_read';

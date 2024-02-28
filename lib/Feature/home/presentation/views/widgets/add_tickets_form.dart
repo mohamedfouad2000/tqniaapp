@@ -1,15 +1,16 @@
 import 'dart:io';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
-import 'package:tqniaapp/Feature/home/data/model/client_model/client_model.dart';
 import 'package:tqniaapp/Feature/home/data/model/get_ticket_type/get_ticket_type.dart';
 import 'package:tqniaapp/Feature/home/data/model/label_model/assgin_to.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_ticket_repo/add_ticket_repo_imp.dart';
@@ -29,7 +30,6 @@ class AddTiketsForm extends StatefulWidget {
 class _AddTiketsFormState extends State<AddTiketsForm> {
   TextEditingController TittleCont = TextEditingController();
   TextEditingController ClientCont = TextEditingController();
-  TextEditingController RequestedbyCont = TextEditingController();
   TextEditingController TickettypeCont = TextEditingController();
   TextEditingController DescriptionCont = TextEditingController();
   TextEditingController AssignedToCont = TextEditingController();
@@ -37,17 +37,7 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
   TextEditingController UploadFileCont = TextEditingController();
   PlatformFile? pickFile;
 
-  List<String> list = <String>[
-    'States option1',
-    'States option2',
-    'States option3',
-    'States option4'
-  ];
-
-  String? clientItem;
-  String? requestedbyItem;
   String? assignItem;
-  String? projectsItem;
 
   String? ticketsTypesItem;
   String? labelsItem;
@@ -67,19 +57,13 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
     return BlocProvider(
         create: (context) => AddticketCubit(AddTicketRepoImpl())
           ..getLabels()
-          ..getClients()
           ..getTicketTypes()
-          ..getAssginTo()
-          ..getRequestedBy()
-          ..getProjects(),
+          ..getAssginTo(),
         child: BlocConsumer<AddticketCubit, AddticketState>(
           builder: (context, state) {
-            if (AddticketCubit.get(context).clients.isNotEmpty &&
-                AddticketCubit.get(context).ticketsTypes.isNotEmpty &&
+            if (AddticketCubit.get(context).ticketsTypes.isNotEmpty &&
                 AddticketCubit.get(context).labels != null &&
-                AddticketCubit.get(context).assginTo.isNotEmpty &&
-                AddticketCubit.get(context).projects != null &&
-                AddticketCubit.get(context).requestedBy.isNotEmpty) {
+                AddticketCubit.get(context).assginTo.isNotEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
@@ -104,132 +88,6 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                       ),
                       customTextFormedFiled(
                           controller: TittleCont, hintText: 'Title'),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Client",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: clientItem,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Choose Client',
-                              style: StylesData.font14
-                                  .copyWith(color: const Color(0x330D223F)),
-                            ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                clientItem = value!;
-                              });
-                            },
-                            items: AddticketCubit.get(context)
-                                .clients
-                                .map<DropdownMenuItem<String>>(
-                                    (ClientModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.name ?? ''),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Requested by",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: requestedbyItem,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Requested By',
-                              style: StylesData.font14
-                                  .copyWith(color: const Color(0x330D223F)),
-                            ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                requestedbyItem = value!;
-                              });
-                            },
-                            items: AddticketCubit.get(context)
-                                .requestedBy
-                                .map<DropdownMenuItem<String>>(
-                                    (ClientModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.name ?? ''),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 24,
                       ),
@@ -265,7 +123,7 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                             isDense: true,
                             isExpanded: true,
                             icon: Icon(
-                              Icons.arrow_downward,
+                              Icons.arrow_drop_down,
                               color: Colors.grey.withOpacity(.4),
                             ),
                             hint: Text(
@@ -317,124 +175,96 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Container(
-                        width: double.infinity,
+                      SizedBox(
                         height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: assignItem,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Requested By',
-                              style: StylesData.font14
+                        width: double.infinity,
+                        child: DropdownSearch<String>(
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:
+                                StylesData.font12.copyWith(color: kMainColor),
+                            dropdownSearchDecoration: InputDecoration(
+                              suffixIconColor: Colors.grey[300],
+                              hintText: 'Assigned To',
+                              hintStyle: StylesData.font14
                                   .copyWith(color: const Color(0x330D223F)),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: kMainColor),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFFEAEAEA)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
                             ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                assignItem = value!;
-                              });
-                            },
-                            items: AddticketCubit.get(context)
-                                .assginTo
-                                .map<DropdownMenuItem<String>>(
-                                    (ClientModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.name ?? ''),
-                              );
-                            }).toList(),
                           ),
+                          popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Assigned To",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 1, color: kMainColor),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Color(0xFFEAEAEA)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  // labelText: 'Password',
+                                ),
+                              )),
+                          itemAsString: (String u) {
+                            String x = '';
+                            AddticketCubit.get(context)
+                                .assginTo
+                                .forEach((element) {
+                              if (int.parse(u) == element.id) x = element.name!;
+                            });
+                            return x.toString();
+                          },
+                          onChanged: (i) {
+                            assignItem = i;
+                          },
+                          items: [
+                            ...List.generate(
+                                AddticketCubit.get(context).assginTo.length,
+                                (index) => AddticketCubit.get(context)
+                                    .assginTo[index]
+                                    .id
+                                    .toString()),
+                          ],
+                          enabled: true,
+                          selectedItem: assignItem,
                         ),
                       ),
                       const SizedBox(
                         height: 24,
-                      ),
-                      Text(
-                        "Project",
-                        style: StylesData.font16.copyWith(color: Colors.black),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 55,
-                        padding: const EdgeInsets.only(
-                          top: 13.76,
-                          left: 17,
-                          right: 16.56,
-                          bottom: 13.24,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1, color: Color(0xFFEAEAEA)),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(10),
-                            value: projectsItem,
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.grey.withOpacity(.4),
-                            ),
-                            hint: Text(
-                              'Project',
-                              style: StylesData.font14
-                                  .copyWith(color: const Color(0x330D223F)),
-                            ),
-                            style:
-                                StylesData.font14.copyWith(color: kMainColor),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                projectsItem = value!;
-                              });
-                            },
-                            items: AddticketCubit.get(context)
-                                .projects
-                                .map<DropdownMenuItem<String>>(
-                                    (ClientModel value) {
-                              return DropdownMenuItem<String>(
-                                value: value.id.toString(),
-                                child: Text(value.name ?? ''),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
                       ),
                       Text(
                         "Label",
@@ -468,7 +298,7 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                             isDense: true,
                             isExpanded: true,
                             icon: Icon(
-                              Icons.arrow_downward,
+                              Icons.arrow_drop_down,
                               color: Colors.grey.withOpacity(.4),
                             ),
                             hint: Text(
@@ -597,26 +427,26 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                         ),
                       defaultButton(
                           fun: () {
+                            print(
+                                ' ${TittleCont.text}  ${ticketsTypesItem ?? ''} ${editModel ?? ''} ${labelsItem ?? ''} ${assignItem ?? ''} ${editModel!.id} ');
+
                             if (formkey.currentState!.validate()) {
                               if (labelsItem != null &&
-                                  clientItem != null &&
                                   ticketsTypesItem != null &&
-                                  assignItem != null &&
-                                  requestedbyItem != null &&
-                                  pickFile != null) {
+                                  assignItem != null) {
                                 AddticketCubit.get(context).addTicket(
                                     title: TittleCont.text,
                                     id: '0',
-                                    projectId: projectsItem == null
-                                        ? ''
-                                        : projectsItem.toString(),
+                                    projectId: '',
                                     tickettypeid: ticketsTypesItem.toString(),
-                                    clientid: clientItem.toString(),
+                                    clientid: editModel!.id.toString(),
                                     assignedto: assignItem.toString(),
                                     labels: labelsItem.toString(),
-                                    requestedbyid: requestedbyItem.toString(),
+                                    requestedbyid: '',
                                     description: DescriptionCont.text,
-                                    file: File(pickFile!.path!));
+                                    file: pickFile != null
+                                        ? File(pickFile!.path!)
+                                        : null);
                               } else {
                                 setState(() {
                                   isEmpty = true;
@@ -655,10 +485,6 @@ class _AddTiketsFormState extends State<AddTiketsForm> {
                 child: Text(state.errorMsq),
               );
             } else if (state is GetAssignToFailuire) {
-              return Center(
-                child: Text(state.errorMsq),
-              );
-            } else if (state is GetProjectsFailuire) {
               return Center(
                 child: Text(state.errorMsq),
               );

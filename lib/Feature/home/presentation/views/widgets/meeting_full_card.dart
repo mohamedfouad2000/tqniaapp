@@ -235,8 +235,10 @@ class _MettingFullCardState extends State<MettingFullCard> {
                                         ),
                                         child: Row(
                                           children: [
-                                            Text('Edit',
-                                                style: StylesData.font7),
+                                            FittedBox(
+                                              child: Text('Edit',
+                                                  style: StylesData.font7),
+                                            ),
                                             const SizedBox(
                                               width: 3,
                                             ),

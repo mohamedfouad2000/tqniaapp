@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
+
 import 'package:tqniaapp/Core/utils/styles.dart';
+
 import 'package:tqniaapp/Feature/home/data/repo/homerepo/home_repos_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/user%20data/user_data_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/leeds_screen.dart';
@@ -13,6 +15,7 @@ import 'package:tqniaapp/Feature/home/presentation/views/screens/profile_screen.
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
+  final bool x = false;
 
   @override
   State<HomeView> createState() => _HomeViewState();

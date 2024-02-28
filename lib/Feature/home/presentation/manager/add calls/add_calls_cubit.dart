@@ -30,9 +30,9 @@ class AddCallsCubit extends Cubit<AddCallsState> {
     });
   }
 
-  Future<void> getCalls() async {
+  Future<void> getCalls({required String status}) async {
     emit(GetCallsLoading());
-    var res = await repo.getCalls();
+    var res = await repo.getCalls(status : status);
     res.fold((failure) => emit(GetCallsfail(eroorMsq: failure.msq.toString())),
         (r) {
       emit(GetCallsSucc(model: r));

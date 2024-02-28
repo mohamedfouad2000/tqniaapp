@@ -12,7 +12,7 @@ class ViewAllLeadsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShowLeadsCubit(HomeRepoImp())..getHomeLeads(),
+      create: (context) => ShowLeadsCubit(HomeRepoImp())..getHomeLeads(date: '',source: '',status: '',search: ''),
       child: BlocConsumer<ShowLeadsCubit, ShowLeadsState>(
         listener: (context, state) {},
         builder: (context, state) {

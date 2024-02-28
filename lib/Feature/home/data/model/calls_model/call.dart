@@ -5,6 +5,8 @@ class Call {
   String? status;
   String? clientId;
   String? notes;
+  String? description;
+
   String? deleted;
   String? createdByUserName;
 
@@ -17,6 +19,7 @@ class Call {
     this.notes,
     this.deleted,
     this.createdByUserName,
+    this.description
   });
 
   factory Call.fromJson(Map<String, dynamic> json) => Call(
@@ -28,6 +31,7 @@ class Call {
         notes: json['notes'] as String?,
         deleted: json['deleted'] as String?,
         createdByUserName: json['created_by_user_name'] as String?,
+        description : json['description'] as String?
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +43,6 @@ class Call {
         'notes': notes,
         'deleted': deleted,
         'created_by_user_name': createdByUserName,
+        'description':description
       };
 }

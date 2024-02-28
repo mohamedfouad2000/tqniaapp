@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/local/cache_Helper.dart';
@@ -7,7 +8,6 @@ import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/company_title_widget.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/profile_custom_app_bar.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/profile_edit_header_widget.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/widgets/turnon_Widget.dart';
 import 'package:tqniaapp/Feature/login/presentation/views/login_view.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -39,24 +39,25 @@ class ProfileScreen extends StatelessWidget {
               height: 16,
             ),
             const CompanyTitleWidget(),
-            const SizedBox(
-              height: 24,
-            ),
-            Text(
-              'Notification',
-              style: StylesData.font16.copyWith(
-                color: const Color(0xFF040415),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const TurnOnWidget(txt: 'Turn on', Image: AssetsData.notification),
-            const SizedBox(
-              height: 16,
-            ),
-            const TurnOnWidget(
-                txt: 'Push notification', Image: AssetsData.push),
+            // const SizedBox(
+            //   height: 24,
+            // ),
+            // Text(
+            //   'Notification',
+            //   style: StylesData.font16.copyWith(
+            //     color: const Color(0xFF040415),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 16,
+            // ),
+            // const TurnOnWidget(txt: 'Turn on', Image: AssetsData.notification),
+            // const SizedBox(
+            //   height: 16,
+            // ),
+            // const TurnOnWidget(
+            //     txt: 'Push notification', Image: AssetsData.push),
+           
             const SizedBox(
               height: 16,
             ),
@@ -72,6 +73,7 @@ class ProfileScreen extends StatelessWidget {
       onTap: () {
         CacheHelper.removeData(key: 'token').then((value) {
           CacheHelper.removeData(key: 'userId').then((value) {
+            FirebaseMessaging.instance.unsubscribeFromTopic('client$USERID');
             TOKEN = '';
             USERID = '';
             Nav(context, const LoginView());

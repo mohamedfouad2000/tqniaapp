@@ -12,6 +12,7 @@ class AddLeadCubit extends Cubit<AddLeadState> {
   List<SourceModel> sourceModel = [];
   List<StatusModel> statusModel = [];
   List<OwenerModel> ownerModel = [];
+  List<String> regionList = [];
 
   Future<void> getLeadStatus() async {
     emit(GetLeadStatusLoading());
@@ -92,10 +93,21 @@ class AddLeadCubit extends Cubit<AddLeadState> {
         note: note);
 
     result.fold((failure) {
-      print(failure.msq);
       emit(CreatnewLeadEroor(failure.msq));
     }, (id) {
       emit(CreatnewLeadSucc(id));
+    });
+  }
+
+  Future<void> getRegion() async {
+    emit(GetRegionLoading());
+    var result = await homrepo.getRegion();
+    result.fold((failure) {
+      print(failure.msq);
+      emit(GetRegionEroor(failure.msq));
+    }, (list) {
+      regionList = list;
+      emit(GetRegionSucc(list));
     });
   }
 }

@@ -29,7 +29,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: CustomMeetingAppBar(),
+            child: customMeetingAppBar(),
           ),
           const SizedBox(
             height: 16,
@@ -59,13 +59,13 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                               String? enddate;
                               return AlertDialog(
                                 surfaceTintColor: Colors.white,
-                                title: Text(
+                                title: const Text(
                                   "Choose Date",
                                 ),
                                 content: StatefulBuilder(builder:
                                     (BuildContext context,
                                         StateSetter setState) {
-                                  return Container(
+                                  return SizedBox(
                                     height: 300,
                                     child: Column(
                                       mainAxisAlignment:
@@ -138,7 +138,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Row(
@@ -215,7 +215,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 40,
                                         ),
                                         if (isEmpty)
@@ -396,7 +396,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
     );
   }
 
-  Row CustomMeetingAppBar() {
+  Row customMeetingAppBar() {
     return Row(
       children: [
         Text(

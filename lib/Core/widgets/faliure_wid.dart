@@ -8,12 +8,14 @@ class FailureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: SizeConfig.screenHeight! * .4,
-      width: double.infinity,
-      child: Center(
-        child: Lottie.asset(
-          'assets/images/error.json',
+    return Center(
+      child: SizedBox(
+        height: SizeConfig.screenHeight! * .4,
+        width: double.infinity,
+        child: Center(
+          child: Lottie.asset(
+            'assets/images/error.json',
+          ),
         ),
       ),
     );

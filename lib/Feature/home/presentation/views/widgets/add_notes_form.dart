@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
@@ -14,7 +15,7 @@ import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_note_repo/add_note_repo_impl.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/note/note_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/note/note_state.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/leads_deatils_screen.dart';
 
 class AddNotesForm extends StatefulWidget {
   const AddNotesForm({
@@ -66,7 +67,8 @@ class _AddNotesFormState extends State<AddNotesForm> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-            NavegatorPush(context, const HomeView());
+
+            Nav(context, LeedsDetiles(id: int.parse(editModel!.id.toString())));
           }
           if (state is AddNoteFail) {
             Fluttertoast.showToast(
@@ -103,28 +105,6 @@ class _AddNotesFormState extends State<AddNotesForm> {
                     height: 12,
                   ),
                   InkWell(
-                      // onTap: () async {
-                      //   DateTime? pickedDate = await showDatePicker(
-                      //       context: context,
-                      //       initialDate: DateTime.now(),
-                      //       firstDate: DateTime(1950),
-                      //       lastDate: DateTime(2100));
-
-                      //   if (pickedDate != null) {
-                      //     var pickedTime = await showTimePicker(
-                      //         context: context, initialTime: TimeOfDay.now());
-                      //     if (pickedTime != null) {
-                      //       String formattedDate =
-                      //           DateFormat('yyyy-MM-dd').format(pickedDate);
-                      //       print(pickedTime);
-                      //       //2024-02-07 09:01:12
-                      //       CreationDatecont.text =
-                      //           '$formattedDate ${pickedTime.hour}:${pickedTime.minute}:08';
-                      //     }
-
-                      //     //set output date to TextField value.
-                      //   } else {}
-                      // },
                       child: customTextFormedFiled(
                           controller: CreationDatecont,
                           hintText: 'Date',
@@ -264,18 +244,14 @@ class _AddNotesFormState extends State<AddNotesForm> {
                   defaultButton(
                       fun: () {
                         if (formKey.currentState!.validate()) {
-                          if (pickFile?.name == null) {
-                            setState(() {
-                              isEmpty = true;
-                            });
-                          } else {
-                            NoteCubit.get(context).addNote(
-                                date: CreationDatecont.text,
-                                id: '0',
-                                title: TittleCont.text,
-                                description: DescriptionCont.text,
-                                file: File(pickFile!.path!));
-                          }
+                          NoteCubit.get(context).addNote(
+                            date: CreationDatecont.text,
+                            id: '0',
+                            title: TittleCont.text,
+                            description: DescriptionCont.text,
+                            file:
+                                pickFile != null ? File(pickFile!.path!) : null,
+                          );
                         }
                       },
                       textWidget: state is AddNoteLoading

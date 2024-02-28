@@ -9,7 +9,6 @@ import 'package:tqniaapp/Feature/home/data/model/client_model/client_model.dart'
 import 'package:tqniaapp/Feature/home/data/model/get_ticket_type/get_ticket_type.dart';
 import 'package:tqniaapp/Feature/home/data/model/label_model/label_model.dart';
 import 'package:tqniaapp/Feature/home/data/model/ticket_item_model/ticket_item_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/tickets_model/ticket.dart';
 import 'package:tqniaapp/Feature/home/data/model/tickets_model/tickets_model.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_ticket_repo/add_ticket_repo.dart';
 
@@ -85,13 +84,25 @@ class AddTicketRepoImpl extends AddTicketRepo {
   }
 
   @override
-  Future<Either<Failure, TicketsModel>> getTicketsList() async {
+  Future<Either<Failure, TicketsModel>> getTicketsList({
+    required String ticketLabel,
+    required String ticketType,
+    required String assignedTo,
+    required String status,
+    required String search,
+  }) async {
     TicketsModel? model;
 
     try {
-      Response<dynamic> res = await DioHelper.getData(
-          url: getticketsByClientEndPoint,
-          query: {'token': TOKEN, 'client_id': USERID});
+      Response<dynamic> res =
+          await DioHelper.getData(url: getticketsByClientEndPoint, query: {
+        'token': TOKEN,
+        'status[]': status != '' ? status : 'open,new,inprogress',
+        if (ticketLabel != '') 'ticket_label': ticketLabel,
+        if (ticketType != '') 'ticket_type_id': ticketType,
+        if (assignedTo != '') 'assigned_to': assignedTo,
+        if (search != '') 'search_by': search
+      });
       print(res.data);
       if (res.data['status'] == 200) {
         model = TicketsModel.fromJson(res.data);
@@ -120,7 +131,7 @@ class AddTicketRepoImpl extends AddTicketRepo {
     required String labels,
     required String requestedbyid,
     required String description,
-    required File file,
+    File? file,
   }) async {
     try {
       Response<dynamic> res = await DioHelper.postData(
@@ -134,15 +145,15 @@ class AddTicketRepoImpl extends AddTicketRepo {
             'client_id': clientid,
             'assigned_to': assignedto,
             'labels': labels,
-            'requested_by_id': requestedbyid,
             'description': description,
-            'manualFiles[]': await MultipartFile.fromFile(file.path,
-                filename: file.path.split('/').last),
+            if (file != null)
+              'manualFiles[]': await MultipartFile.fromFile(file.path,
+                  filename: file.path.split('/').last),
           }));
       print(res.data);
       print("object");
       if (res.data["status"] == 200) {
-        print('||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
+        // print('||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
         print(res.data["data"]['id']);
         return right(int.parse(res.data["data"]['id'].toString()));
       } else {
@@ -159,7 +170,8 @@ class AddTicketRepoImpl extends AddTicketRepo {
   }
 
   @override
-  Future<Either<Failure, TicketItemModel>> geTicketById({required int id}) async {
+  Future<Either<Failure, TicketItemModel>> geTicketById(
+      {required int id}) async {
     try {
       TicketItemModel model;
       print(id);
@@ -217,7 +229,9 @@ class AddTicketRepoImpl extends AddTicketRepo {
     //
     List<ClientModel> model = [];
     try {
-      Response<dynamic> res = await DioHelper.getData(url: getAssginToEndPoint);
+      Response<dynamic> res = await DioHelper.getData(
+          url: getAssginToEndPoint, query: {'token': TOKEN});
+      print((res.data));
       if (res.data['status'] == 200) {
         for (var i = 0; i < res.data['data']['assgin_to'].length; i++) {
           model.add(ClientModel.fromJson(res.data['data']['assgin_to'][i]));
@@ -270,6 +284,33 @@ class AddTicketRepoImpl extends AddTicketRepo {
           model.add(ClientModel.fromJson(res.data['data']['requested_by'][i]));
         }
         return right(model);
+      } else {
+        return left(ServerFailure(msq: res.data['message'].toString()));
+      }
+    } catch (e) {
+      print(e);
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(msq: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> addCommentToTicket(
+      {required int id, required String description}) async {
+    try {
+      Response<dynamic> res = await DioHelper.postData(
+          url: addCommentToTicketEndPoint,
+          data: FormData.fromMap({
+            'token': TOKEN,
+            'id': id,
+            'description': description,
+            'is_note': 0
+          }));
+
+      if (res.data['status'] == 200) {
+        return right(res.data['message']);
       } else {
         return left(ServerFailure(msq: res.data['message'].toString()));
       }

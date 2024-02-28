@@ -1,5 +1,4 @@
 import 'package:tqniaapp/Feature/home/data/model/ticket_item_model/ticket_item_model.dart';
-import 'package:tqniaapp/Feature/home/data/model/tickets_model/tickets_model.dart';
 
 sealed class AddticketState {}
 
@@ -65,19 +64,6 @@ final class GetTicketsTypeFailuire extends AddticketState {
   GetTicketsTypeFailuire({required this.errorMsq});
 }
 
-final class GetTicketsListloading extends AddticketState {}
-
-final class GetTicketsListSucc extends AddticketState {
-  final TicketsModel model;
-  GetTicketsListSucc(this.model);
-}
-
-final class GetTicketsListFailuire extends AddticketState {
-  final String errorMsq;
-
-  GetTicketsListFailuire({required this.errorMsq});
-}
-
 final class AddTicketloading extends AddticketState {}
 
 final class AddTicketSucc extends AddticketState {
@@ -116,3 +102,29 @@ final class CheckPermisionFailuire extends AddticketState {
 
   CheckPermisionFailuire({required this.errorMsq});
 }
+
+
+final class AddCommentloading extends AddticketState {}
+
+final class AddCommentSucc extends AddticketState {
+  final String msq;
+  AddCommentSucc(this.msq);
+}
+
+final class AddCommentFailuire extends AddticketState {
+  final String errorMsq;
+
+  AddCommentFailuire({required this.errorMsq});
+}
+final class GetAllFiledloading extends AddticketState {}
+
+final class GetAllFiledSucc extends AddticketState {
+
+}
+
+final class GetAllFiledFailuire extends AddticketState {
+  final String errorMsq;
+
+  GetAllFiledFailuire({required this.errorMsq});
+}
+

@@ -43,7 +43,7 @@ class TableMultiExample extends StatelessWidget {
               }
             }
           }
-          NavegatorPush(context, EventView(model: model));
+          NavegatorPush(context, EventView(id: int.parse(model!.id.toString())));
         },
         firstDayOfWeek: 6,
         monthViewSettings: const MonthViewSettings(

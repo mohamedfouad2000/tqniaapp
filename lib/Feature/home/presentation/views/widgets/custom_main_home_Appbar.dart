@@ -38,7 +38,9 @@ class CustomMainHomePageAppBar extends StatelessWidget {
                     child: CachedNetworkImage(
                       height: 46,
                       width: 46,
-                      imageUrl: 'https://system.tqnia.me/$profImge',
+                      imageUrl: profImge != 'null'
+                          ? 'https://system.tqnia.me/$profImge'
+                          : 'https://system.tqnia.me/assets/images/avatar.jpg',
                       placeholder: (context, url) =>
                           LoadingAnimationWidget.newtonCradle(
                         size: 50,
@@ -95,7 +97,7 @@ class CustomMainHomePageAppBar extends StatelessWidget {
                   ..getNotificationCount(),
                 child: BlocConsumer<NotificationCubit, NotificationState>(
                   listener: (context, state) {
-                    // TODO: implement listener
+          
                   },
                   builder: (context, state) {
                     if (state is GetNotificationCountSucc) {

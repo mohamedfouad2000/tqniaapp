@@ -19,8 +19,9 @@ class ShareWithWidget extends StatefulWidget {
 
 class _ShareWithWidgetState extends State<ShareWithWidget> {
   Set<Datum>? list2 = {};
+  Set<Datum>? list3 = {};
+
   List<String> sList = [];
-  int x = 0;
 
   Future<void> getclient() async {
     String? x = widget.item.shareWith;
@@ -36,14 +37,13 @@ class _ShareWithWidgetState extends State<ShareWithWidget> {
           break;
         }
       }
-      print("First sList $sList");
+      // print("First sList $sList");
     }
   }
 
   @override
   void initState() {
     getclient();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -57,9 +57,10 @@ class _ShareWithWidgetState extends State<ShareWithWidget> {
             if (sList.isNotEmpty) {
               state.Model.data?.forEach((element) {
                 for (var e in sList) {
-                  print('${element.name} ${e.trim()}');
+                  // print('${element.name} ${e.trim()}');
                   if (element.id == e.trim()) {
                     // print("//////////////////");
+
                     list2!.add(element);
                     // print(list2!.length);
                   }
@@ -68,47 +69,108 @@ class _ShareWithWidgetState extends State<ShareWithWidget> {
               });
             }
 
-            return Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  height: 25,
-                  child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        list2!.elementAt(index);
-                        x += 12;
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(1000000),
-                          child: CachedNetworkImage(
-                            height: 24,
-                            width: 24,
-                            imageUrl: list2!.elementAt(index).image == null
-                                ? 'https://system.tqnia.me/assets/images/avatar.jpg'
-                                : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
-                            placeholder: (context, url) =>
-                                LoadingAnimationWidget.newtonCradle(
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                            errorWidget: (context, url, er) => Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
+            return InkWell(
+              onTap: () {
+                if (list2!.isNotEmpty) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          surfaceTintColor: Colors.white,
+                          title: const Text(
+                            "people in Mettings",
+                          ),
+                          content: StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return Container(
+                              height: 120,
+                              width: 120,
+                              color: Colors.white,
+                              child: ListView.builder(
+                                itemCount: list2?.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(list2!
+                                        .elementAt(index)
+                                        .name
+                                        .toString()),
+                                    leading: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(1000000),
+                                      child: CachedNetworkImage(
+                                        height: 24,
+                                        width: 24,
+                                        imageUrl: list2!
+                                                    .elementAt(index)
+                                                    .image ==
+                                                null
+                                            ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                            : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                                        placeholder: (context, url) =>
+                                            LoadingAnimationWidget.newtonCradle(
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                        errorWidget: (context, url, er) =>
+                                            Container(
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          }),
+                        );
+                      });
+                }
+              },
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    height: 25,
+                    child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          list2!.elementAt(index);
+
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(1000000),
+                            child: CachedNetworkImage(
+                              height: 24,
+                              width: 24,
+                              imageUrl: list2!.elementAt(index).image == null
+                                  ? 'https://system.tqnia.me/assets/images/avatar.jpg'
+                                  : '$showImageurl${list2!.elementAt(index).image.toString().split('/').last}',
+                              placeholder: (context, url) =>
+                                  LoadingAnimationWidget.newtonCradle(
+                                size: 50,
+                                color: Colors.grey,
+                              ),
+                              errorWidget: (context, url, er) => Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          width: 0,
-                        );
-                      },
-                      itemCount: list2?.length ?? 0),
-                ),
-              ],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            width: 0,
+                          );
+                        },
+                        itemCount: list2?.length ?? 0),
+                  ),
+                ],
+              ),
             );
           } else if (state is Clientsfail) {
             return const Text('');

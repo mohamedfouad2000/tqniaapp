@@ -92,7 +92,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
               if (islast) {
                 CacheHelper.saveData(key: 'onBoarding', value: true)
                     .then((value) {
-                  NavegatorPush(context, const LoginView());
+                  Nav(context, const LoginView());
                 });
               } else {
                 pageController.nextPage(

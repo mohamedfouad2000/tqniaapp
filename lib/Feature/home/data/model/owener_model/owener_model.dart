@@ -13,4 +13,6 @@ class OwenerModel {
         'id': id,
         'name': name,
       };
+
+  userAsStringByName() {}
 }

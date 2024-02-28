@@ -3,7 +3,9 @@ import 'package:tqniaapp/Core/errors/failures.dart';
 import 'package:tqniaapp/Feature/home/data/model/calls_model/calls_model.dart';
 
 abstract class AddCallsRep {
-  Future<Either<Failure, CallsModel>> getCalls();
+  Future<Either<Failure, CallsModel>> getCalls({
+    required String status,
+  });
   Future<Either<Failure, int>> addCalls({
     required String id,
     required String status,
