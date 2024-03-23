@@ -12,6 +12,7 @@ import 'package:tqniaapp/Feature/home/data/repo/metting%20repo/metting_repo_imp.
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_state.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/edit_metting_screen.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/leads_deatils_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/share_with.dart';
 
 class EventView extends StatefulWidget {
@@ -28,7 +29,6 @@ class _EventViewState extends State<EventView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -68,7 +68,7 @@ class _EventViewState extends State<EventView> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 250,
+                      height: 300,
                       padding: const EdgeInsetsDirectional.only(
                           start: 32, end: 32, top: 20, bottom: 20),
                       decoration: ShapeDecoration(
@@ -92,7 +92,7 @@ class _EventViewState extends State<EventView> {
                         children: [
                           Text(
                             "${state.model.title}",
-                            maxLines: 2,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style:
                                 StylesData.font16.copyWith(color: Colors.black),
@@ -113,6 +113,41 @@ class _EventViewState extends State<EventView> {
                           const LineWidget(),
                           const SizedBox(
                             height: 12,
+                          ),
+                          if (state.model.clientId != '0' &&
+                              state.model.clientId.toString() != 'null')
+                            InkWell(
+                              onTap: () {
+                                NavegatorPush(
+                                  context,
+                                  LeedsDetiles(
+                                      id: int.parse(
+                                          state.model.clientId.toString())),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Lead : ",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: StylesData.font12
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                  Text(
+                                    "${state.model.clientName}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: StylesData.font12.copyWith(
+                                      color: colorHex(
+                                          state.model.color.toString()),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          const SizedBox(
+                            height: 24,
                           ),
                           Row(
                             children: [

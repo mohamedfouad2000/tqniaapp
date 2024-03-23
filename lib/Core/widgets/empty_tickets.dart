@@ -7,8 +7,8 @@ class EmptyTicketsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-mainAxisAlignment: MainAxisAlignment.center,
-crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text("Empty Ticket"),
         SizedBox(

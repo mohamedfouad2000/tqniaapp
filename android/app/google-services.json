@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1091379967672:android:7510e341e58d5d8078a64d",
+        "mobilesdk_app_id": "1:1091379967672:android:83c75ae78b1ec35178a64d",
         "android_client_info": {
-          "package_name": "com.example.tqniaapp"
+          "package_name": "com.tqniav1.tqniaapp"
         }
       },
       "oauth_client": [],

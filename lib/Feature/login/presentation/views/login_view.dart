@@ -18,7 +18,10 @@ class LoginView extends StatelessWidget {
         builder: (BuildContext context, state) {
           return Scaffold(
             appBar: AppBar(
-    
+              shadowColor: kbackColor,
+              backgroundColor: kbackColor,
+              surfaceTintColor: kbackColor,
+
               // leading: IconButton(
               //   onPressed: () {
               //     Navigator.pop(context);

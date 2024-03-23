@@ -18,12 +18,9 @@ class AddNoteRepoImp extends AddNoteRepo {
     print(USERID);
 
     try {
-      Response<dynamic> res =
-          await DioHelper.getData(url: getNotesEndPoint, query: {
-        'token': TOKEN,
-        'client_id': USERID,
-        'title':title
-      });
+      Response<dynamic> res = await DioHelper.getData(
+          url: getNotesEndPoint,
+          query: {'token': TOKEN, 'client_id': USERID, 'title': title});
 
       print(res.data);
       if (res.data['status'] == 200) {

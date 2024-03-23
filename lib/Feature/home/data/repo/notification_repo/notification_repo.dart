@@ -7,4 +7,6 @@ abstract class NotificationRepo {
   Future<Either<Failure, int>> getNotificationCount();
   Future<Either<Failure, int>> deleteNotificationById({required int id});
   Future<Either<Failure, String>> MakeNotificationRead({required int id});
+  Future<Either<Failure, String>> setLocation(
+      {required double long, required double lat});
 }

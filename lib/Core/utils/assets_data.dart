@@ -55,4 +55,10 @@ class AssetsData {
   static const eye2 = 'assets/images/eye2.png';
   static const call2 = 'assets/images/call2.png';
   static const eye = 'assets/images/eye-slash.png';
+
+  //Clock In - out
+  static const recbalc = 'assets/images/recblac.png';
+  static const recred = 'assets/images/recred.png';
+  static const power = 'assets/images/Power.png';
+  static const clockIcon = 'assets/images/clock.png';
 }

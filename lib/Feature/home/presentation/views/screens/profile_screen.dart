@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
             // ),
             // const TurnOnWidget(
             //     txt: 'Push notification', Image: AssetsData.push),
-           
+
             const SizedBox(
               height: 16,
             ),

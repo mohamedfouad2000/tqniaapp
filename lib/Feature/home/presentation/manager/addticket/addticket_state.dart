@@ -103,7 +103,6 @@ final class CheckPermisionFailuire extends AddticketState {
   CheckPermisionFailuire({required this.errorMsq});
 }
 
-
 final class AddCommentloading extends AddticketState {}
 
 final class AddCommentSucc extends AddticketState {
@@ -116,15 +115,13 @@ final class AddCommentFailuire extends AddticketState {
 
   AddCommentFailuire({required this.errorMsq});
 }
+
 final class GetAllFiledloading extends AddticketState {}
 
-final class GetAllFiledSucc extends AddticketState {
-
-}
+final class GetAllFiledSucc extends AddticketState {}
 
 final class GetAllFiledFailuire extends AddticketState {
   final String errorMsq;
 
   GetAllFiledFailuire({required this.errorMsq});
 }
-

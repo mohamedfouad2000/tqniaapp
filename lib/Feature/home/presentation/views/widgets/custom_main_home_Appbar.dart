@@ -14,6 +14,7 @@ import 'package:tqniaapp/Feature/home/presentation/manager/Notification/notifica
 import 'package:tqniaapp/Feature/home/presentation/manager/user%20data/user_data_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/user%20data/user_data_state.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/noti_screen.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/reminder_screen.dart';
 
 class CustomMainHomePageAppBar extends StatelessWidget {
   const CustomMainHomePageAppBar({
@@ -92,13 +93,39 @@ class CustomMainHomePageAppBar extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                onTap: () {
+                  NavegatorPush(context, const ReminderScreen());
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 29,
+                      backgroundColor:
+                          const Color(0xFF040415).withOpacity(0.10),
+                    ),
+                    const CircleAvatar(
+                      radius: 28,
+                      backgroundColor: Colors.white,
+                      child: Center(
+                        child: ImageIcon(AssetImage(AssetsData.clockIcon)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
               BlocProvider(
                 create: (context) => NotificationCubit(NotificationRepoImp())
                   ..getNotificationCount(),
                 child: BlocConsumer<NotificationCubit, NotificationState>(
-                  listener: (context, state) {
-          
-                  },
+                  listener: (context, state) {},
                   builder: (context, state) {
                     if (state is GetNotificationCountSucc) {
                       return InkWell(

@@ -62,8 +62,6 @@ final class SetMeetingStatusfail extends MettingsState {
   SetMeetingStatusfail({required this.errormsq});
 }
 
-
-
 final class GetMeetingByIdLoading extends MettingsState {}
 
 final class GetMeetingByIdSucc extends MettingsState {

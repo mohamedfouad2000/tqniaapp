@@ -68,7 +68,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     if (state.model.data!.notes!.isEmpty) {
                       return const Expanded(
                         child: Center(
-                          child:SingleChildScrollView (
+                          child: SingleChildScrollView(
                             child: EmptyNotesWidget(),
                           ),
                         ),

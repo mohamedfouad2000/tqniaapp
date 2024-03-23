@@ -6,6 +6,8 @@ final class ShowLeadsInitial extends ShowLeadsState {}
 
 final class ShowLeadsloading extends ShowLeadsState {}
 
+final class ShowLeadsPagginationloading extends ShowLeadsState {}
+
 final class ShowLeadssucc extends ShowLeadsState {
   final LeadModel model;
 

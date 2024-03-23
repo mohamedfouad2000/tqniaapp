@@ -1,10 +1,8 @@
-
 import 'package:tqniaapp/Feature/home/data/model/tickets_model/tickets_model.dart';
 
 abstract class ShowTicketsState {}
 
 final class ShowTicketsInitial extends ShowTicketsState {}
-
 
 final class GetTicketsListloading extends ShowTicketsState {}
 
@@ -18,4 +16,3 @@ final class GetTicketsListFailuire extends ShowTicketsState {
 
   GetTicketsListFailuire({required this.errorMsq});
 }
-

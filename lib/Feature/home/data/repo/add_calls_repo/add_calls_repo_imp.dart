@@ -55,7 +55,6 @@ class AddCallsRepoImp extends AddCallsRep {
   @override
   Future<Either<Failure, CallsModel>> getCalls({
     required String status,
-
   }) async {
     CallsModel? model;
     print(TOKEN);
@@ -66,7 +65,7 @@ class AddCallsRepoImp extends AddCallsRep {
           await DioHelper.getData(url: getCallsEndPoint, query: {
         'token': TOKEN,
         'client_id': USERID,
-        'status':status,
+        'status': status,
       });
 
       print(res.data);

@@ -12,6 +12,12 @@ final class getNotificatSucc extends NotificationState {
   getNotificatSucc({required this.model});
 }
 
+final class getNotificatLocationSucc extends NotificationState {
+  final NotificationModel locationmodel;
+
+  getNotificatLocationSucc({required this.locationmodel});
+}
+
 final class getNotificatieroor extends NotificationState {
   final String errormsq;
 
@@ -58,4 +64,18 @@ final class DeleteNotificationByIderoor extends NotificationState {
   final String errormsq;
 
   DeleteNotificationByIderoor({required this.errormsq});
+}
+
+final class SetLocationLoading extends NotificationState {}
+
+final class SetLocationSucc extends NotificationState {
+  final String txt;
+
+  SetLocationSucc({required this.txt});
+}
+
+final class SetLocationeroor extends NotificationState {
+  final String errormsq;
+
+  SetLocationeroor({required this.errormsq});
 }

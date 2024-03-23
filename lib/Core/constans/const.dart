@@ -52,10 +52,17 @@ const deleteNotificationEndPoint = 'ApiNotifications/delete';
 const getallcontactsEndPoint = 'ApiEvents/get_all_contacts_of_client';
 const getCommonColorEndPoint = 'ApiEvents/getCommonColor';
 const getMeetingByIdEndPoint = 'ApiEvents/getById';
-
+const getAllremindersEndPoint = 'ApiEvents/getAllreminders';
+const createReminderEndPoint = 'ApiEvents/createReminder';
+const markAsDoneReminderEndPoint = 'ApiEvents/markAsDone';
+const deleteReminderEndPoint = 'ApiEvents/delete';
 
 const showFile = 'https://system.tqnia.me/files/timeline_files/';
-const addCommentToTicketEndPoint='ApiTickets/addComment';
+const addCommentToTicketEndPoint = 'ApiTickets/addComment';
 
 const setNotificationAsReedEndPoint =
     'ApiNotifications/set_notification_status_as_read';
+const getNotificationsOFLocationEndPoint = 'api/get-notification';
+
+const setAttendaceEndPoint = 'ApiAttendace/save';
+const getAttendaceEndPoint = 'ApiAttendace/getAttendace';

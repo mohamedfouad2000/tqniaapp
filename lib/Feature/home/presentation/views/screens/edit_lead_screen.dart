@@ -43,7 +43,6 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     NameCont?.text = widget.editModel.companyName.toString();
     statusValue = widget.editModel.leadStatusId == ''
         ? null
@@ -57,11 +56,7 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
     AddressCont?.text = widget.editModel.address.toString();
     IndustryCont?.text = widget.editModel.industry.toString();
 
-    regionItem = widget.editModel.region == ''
-        ? null
-        : widget.editModel.region;
-        
-
+    regionItem = widget.editModel.region == '' ? null : widget.editModel.region;
 
     PhoneCont?.text = widget.editModel.phone.toString();
     MobileCont?.text = widget.editModel.vatNumber.toString();
@@ -487,7 +482,7 @@ class _EditLeadScreenState extends State<EditLeadScreen> {
                         const SizedBox(
                           height: 24,
                         ),
-                      Text(
+                        Text(
                           "Region",
                           style:
                               StylesData.font16.copyWith(color: Colors.black),

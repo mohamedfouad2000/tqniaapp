@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:location/location.dart';
 import 'package:tqniaapp/Core/constans/const.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
@@ -54,7 +55,7 @@ Widget customTextFiled(
         ontapFun;
       },
       maxLines: maxLines,
-      onChanged: onChanged ,
+      onChanged: onChanged,
       keyboardType: type,
       style: StylesData.font14.copyWith(color: kMainColor),
       decoration: InputDecoration(
@@ -169,7 +170,7 @@ Color colorHex(String color) {
 }
 
 String showImageFun({required String image}) {
-  print(image);
+  // print(image);
   if (image != 'null') {
     String str = image.toString();
     // print('image is $image');
@@ -229,4 +230,30 @@ Color getStatusColor(String? status) {
       return Colors.grey;
     }
   }
+}
+
+Future<LocationData> getloction() async {
+  Location location = Location();
+  bool? servesenable;
+  PermissionStatus? permison;
+  LocationData? locationdata;
+  servesenable = await location.serviceEnabled();
+  if (!servesenable) {
+    servesenable = await location.requestService();
+    if (!servesenable) {
+      // return;
+    }
+  }
+  permison = await location.hasPermission();
+  if (permison == PermissionStatus.denied) {
+    permison = await location.requestPermission();
+    if (permison != PermissionStatus.granted) {
+      // return;
+    }
+  }
+
+  locationdata = await location.getLocation();
+  return locationdata;
+  // lat = locationdata.latitude;
+  // long = locationdata.longitude;
 }

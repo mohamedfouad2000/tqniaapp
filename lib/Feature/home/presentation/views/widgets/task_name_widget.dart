@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:location/location.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/Notification/notification_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/Notification/notification_state.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/home_view.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/event_view_page.dart';
+import 'package:tqniaapp/Feature/home/presentation/views/screens/reminder_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/ticket_info_screen.dart';
 
 class TaskName extends StatefulWidget {
@@ -44,23 +45,28 @@ class _TaskNameState extends State<TaskName> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NotificationCubit, NotificationState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return InkWell(
-          onTap: () {
+          onTap: () async {
+            print(widget.modelType);
             if (widget.modelType == 'meeting') {
               NavegatorPush(
                   context, EventView(id: int.parse(widget.modelId.toString())));
             } else if (widget.modelType == 'ticket') {
               NavegatorPush(context,
                   TicketInfoScreen(id: int.parse(widget.modelId.toString())));
-            } else {}
-                NotificationCubit.get(context)
+            } else if (widget.modelType == 'Tracking') {
+              LocationData l = await getloction();
+              print(l.latitude);
+              print(l.longitude);
+              NotificationCubit.get(context)
+                  .setLocation(long: l.longitude ?? 0, lat: l.latitude ?? 0);
+            } else {
+              NavegatorPush(context, const ReminderScreen());
+            }
+            NotificationCubit.get(context)
                 .MakeNotificationRead(id: int.parse(widget.id.toString()));
-        
-              
           },
           child: Stack(
             alignment: Alignment.topRight,

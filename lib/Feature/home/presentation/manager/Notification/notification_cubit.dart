@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tqniaapp/Feature/home/data/repo/notification_repo/notification_repo.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/Notification/notification_state.dart';
@@ -12,17 +11,18 @@ class NotificationCubit extends Cubit<NotificationState> {
     var res = await repo.getNotification();
     res.fold((l) {
       emit(getNotificatieroor(errormsq: l.msq.toString()));
-    }, (r) {
+    }, (r)  {
       emit(getNotificatSucc(model: r));
     });
   }
+
 
   Future<void> getNotificationCount() async {
     emit(GetNotificationCountLoading());
     var res = await repo.getNotificationCount();
     res.fold((l) {
       emit(GetNotificationCounteroor(errormsq: l.msq.toString()));
-    }, (r) {
+    }, (r)  {
       emit(GetNotificationCountSucc(count: r));
     });
   }
@@ -37,5 +37,13 @@ class NotificationCubit extends Cubit<NotificationState> {
     });
   }
 
- 
+  Future<void> setLocation({required double long, required double lat}) async {
+    // emit(SetLocationLoading());
+    var res = await repo.setLocation(lat: lat, long: long);
+    res.fold((l) {
+      emit(SetLocationeroor(errormsq: l.msq.toString()));
+    }, (r) {
+      emit(SetLocationSucc(txt: r.toString()));
+    });
+  }
 }

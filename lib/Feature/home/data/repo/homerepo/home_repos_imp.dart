@@ -39,7 +39,7 @@ class HomeRepoImp extends HomeRepo {
           'token': TOKEN,
           'id': id,
           'name': leadName,
-          'custom_field_15':industry,
+          'custom_field_15': industry,
           'company_name': leadName,
           'phone': int.parse(phone),
           'address': address,
@@ -162,20 +162,25 @@ class HomeRepoImp extends HomeRepo {
       {required String status,
       required String search,
       required String source,
+      int skip = 0,
       required String date}) async {
+    print('skip is $skip and Limit is 5');
+    print('data is  $status $search $source $date');
     try {
       LeadModel model;
       print('siu');
       Response<dynamic> res =
           await DioHelper.getData(url: getListLeadEndPoint, query: {
         'token': TOKEN,
-        'limit': 35,
-        'skip': 0,
+        'limit': 20,
+        'skip': skip,
         'status': status,
         'date_types': date,
         'source': source,
-        'search_by':search
+        'search_by': search
       });
+
+      print('////////// the dat00000000000a is ${res.data}');
       if (res.data['status'] == 200) {
         model = LeadModel.fromJson(res.data);
         return right(model);

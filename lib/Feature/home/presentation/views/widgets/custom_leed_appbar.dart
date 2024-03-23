@@ -18,7 +18,6 @@ class CustomLeedAppBar extends StatelessWidget {
           style: StylesData.font18.copyWith(color: const Color(0xFF040415)),
         ),
         const Spacer(),
-     
         InkWell(
           onTap: () {
             TextEditingController NameCont = TextEditingController();

@@ -60,6 +60,28 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
               textColor: Colors.white,
               fontSize: 18.0);
         }
+        if (state is SetLocationSucc) {
+          Fluttertoast.showToast(
+              msg: state.txt.toString(),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 18.0);
+          Nav(context, const HomeView());
+        }
+        if (state is SetLocationeroor) {
+          Fluttertoast.showToast(
+              msg: state.errormsq.toString(),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 18.0);
+          Nav(context, const HomeView());
+        }
       },
       builder: (context, state) {
         if (state is getNotificatSucc) {
@@ -109,46 +131,49 @@ class _NotificationScreenBodyState extends State<NotificationScreenBody> {
                     height: 12,
                   ),
                   Expanded(
-                    child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return Slidable(
-                              key: ValueKey(
-                                int.parse(state
-                                    .model.data!.notifications![index].id!),
-                              ),
-                              child: TaskName(
-                                id: state.model.data!.notifications![index].id
-                                    .toString(),
-                                title: state
-                                    .model.data!.notifications![index].title
-                                    .toString(),
-                                body: state
-                                    .model.data!.notifications![index].body
-                                    .toString(),
-                                modelId: state
-                                    .model.data!.notifications![index].modelId
-                                    .toString(),
-                                modelType: state
-                                    .model.data!.notifications![index].modelType
-                                    .toString(),
-                                userId: state
-                                    .model.data!.notifications![index].userId
-                                    .toString(),
-                                isRead: state
-                                    .model.data!.notifications![index].isRead
-                                    .toString(),
-                                createdAt: state
-                                    .model.data!.notifications![index].createdAt
-                                    .toString(),
-                              ));
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 20,
-                          );
-                        },
-                        itemCount: state.model.data!.notifications!.length),
-                  ),
+                      child: CustomScrollView(
+                    slivers: [
+                      SliverList.separated(
+                          itemBuilder: (context, index) {
+                            return Slidable(
+                                key: ValueKey(
+                                  int.parse(state
+                                      .model.data!.notifications![index].id!),
+                                ),
+                                child: TaskName(
+                                  id: state.model.data!.notifications![index].id
+                                      .toString(),
+                                  title: state
+                                      .model.data!.notifications![index].title
+                                      .toString(),
+                                  body: state
+                                      .model.data!.notifications![index].body
+                                      .toString(),
+                                  modelId: state
+                                      .model.data!.notifications![index].modelId
+                                      .toString(),
+                                  modelType: state.model.data!
+                                      .notifications![index].modelType
+                                      .toString(),
+                                  userId: state
+                                      .model.data!.notifications![index].userId
+                                      .toString(),
+                                  isRead: state
+                                      .model.data!.notifications![index].isRead
+                                      .toString(),
+                                  createdAt: state.model.data!
+                                      .notifications![index].createdAt
+                                      .toString(),
+                                ));
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 20,
+                            );
+                          },
+                          itemCount: state.model.data!.notifications!.length),
+                    ],
+                  )),
                 ],
               ));
         } else if (state is getNotificatieroor) {

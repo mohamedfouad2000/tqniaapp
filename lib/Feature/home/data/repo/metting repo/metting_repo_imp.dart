@@ -47,7 +47,7 @@ class MettingRepoImp extends MettingRepo {
   Future<Either<Failure, String>> addMettingForm(
       {required String title,
       required String description,
-      int leadid=0,
+      int leadid = 0,
       required String labels,
       required String shareWith,
       required int id,
@@ -65,7 +65,7 @@ class MettingRepoImp extends MettingRepo {
           data: FormData.fromMap({
             'token': TOKEN,
             'start_date': start_date,
-            if(leadid!=0) 'client_id':leadid,
+            if (leadid != 0) 'client_id': leadid,
             'description': description,
             'title': title,
             'start_time': startTime,

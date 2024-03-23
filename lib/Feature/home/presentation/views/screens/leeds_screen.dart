@@ -32,12 +32,13 @@ class _LeedsScreenState extends State<LeedsScreen> {
   String? dateItem;
   var searchCont = TextEditingController();
   bool showFiltter = false;
+  int skip = 0;
 
   List<String> dateType = ['last_update', 'created_date', 'reach_date'];
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16, bottom: 7),
       child: BlocProvider(
         create: (context) => ShowLeadsCubit(HomeRepoImp())
           ..getHomeLeads(
@@ -330,371 +331,481 @@ class _LeedsScreenState extends State<LeedsScreen> {
                 builder: (context, state) {
                   if (state is ShowLeadssucc) {
                     if (state.model.data!.leads!.isEmpty) {
-                      return const Center(child: LeadsEmptyWidget());
+                      return const Expanded(
+                          child: SingleChildScrollView(
+                              child: Center(child: LeadsEmptyWidget())));
                     }
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: DataTable(
-                            sortAscending: true,
-                            columnSpacing: 16.0,
-                            dataRowMaxHeight: double.infinity,
-                            dataRowMinHeight: 71,
-                            dividerThickness: 1,
-                            border: TableBorder(
-                              horizontalInside:
-                                  BorderSide(color: kbackColor, width: 20),
-                              borderRadius: BorderRadius.circular(10),
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                sortAscending: true,
+                                columnSpacing: 16.0,
+                                dataRowMaxHeight: double.infinity,
+                                dataRowMinHeight: 71,
+                                dividerThickness: 1,
+                                border: TableBorder(
+                                  horizontalInside:
+                                      BorderSide(color: kbackColor, width: 20),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                dataRowColor:
+                                    MaterialStateProperty.resolveWith<Color?>(
+                                        (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.selected)) {
+                                    return kMainColor;
+                                  }
+                                  return null; // Use the default value.
+                                }),
+                                columns: [
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Lead name',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Status',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Phone number',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Last Update',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Follow Date',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Industry',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Region',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Container(
+                                      width: 150,
+                                      height: 50,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0x33E92929),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Action',
+                                          style: StylesData.font12.copyWith(
+                                              color: const Color(0xFFE92929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                rows: List<DataRow>.generate(
+                                  ((state.model.data?.leads?.length)!),
+                                  (index) {
+                                    final item =
+                                        state.model.data?.leads?[index];
+                                    return DataRow(
+                                        color:
+                                            MaterialStateProperty.resolveWith(
+                                                getColor),
+                                        cells: [
+                                          DataCell(
+                                            Center(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  editModel = item;
+                                                  NavegatorPush(
+                                                    context,
+                                                    LeedsDetiles(
+                                                        id: int.parse(
+                                                            editModel!.id!)),
+                                                  );
+                                                },
+                                                child: SizedBox(
+                                                  width: 150,
+                                                  child: Text(
+                                                    item?.companyName ?? '',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.center,
+                                                    style: StylesData.font12
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: Container(
+                                                width: 83,
+                                                height: 30,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 5),
+                                                decoration: ShapeDecoration(
+                                                  color: colorHex(
+                                                      item?.leadStatusColor ??
+                                                          ''),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    item?.leadStatusTitle ?? '',
+                                                    style: GoogleFonts.rubik(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    openDialPad(
+                                                        item?.phone ?? '');
+                                                  },
+                                                  child: Text(
+                                                    item?.phone ?? '',
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: StylesData.font12
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: Text(
+                                                  item?.lastUpdate ?? '',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: StylesData.font12
+                                                      .copyWith(
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: Text(
+                                                  item?.followDate ?? '',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: StylesData.font12
+                                                      .copyWith(
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: Text(
+                                                  item?.industry ?? '',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: StylesData.font12
+                                                      .copyWith(
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Center(
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: Text(
+                                                  item?.region ?? '',
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: StylesData.font12
+                                                      .copyWith(
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(Center(
+                                            child: InkWell(
+                                              onTap: () {
+                                                editModel = item;
+                                                NavegatorPush(
+                                                  context,
+                                                  LeedsDetiles(
+                                                      id: int.parse(
+                                                          editModel!.id!)),
+                                                );
+                                              },
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 22,
+                                                    backgroundColor: Colors.grey
+                                                        .withOpacity(.3),
+                                                  ),
+                                                  const CircleAvatar(
+                                                    radius: 21,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    child: Center(
+                                                      child: Image(
+                                                        image: AssetImage(
+                                                          AssetsData.edit2,
+                                                        ),
+                                                        width: 24,
+                                                        height: 24,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )),
+                                        ]);
+                                  },
+                                ),
+                              ),
                             ),
-                            dataRowColor:
-                                MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return kMainColor;
-                              }
-                              return null; // Use the default value.
-                            }),
-                            columns: [
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Lead name',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          // height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  state.model.data!.count != ''
+                                      ? "${state.model.data!.leads!.length + skip}/${state.model.data!.count}"
+                                      : '',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Opacity(
+                                opacity: skip != 0 ? 1 : .2,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    if (skip != 0) {
+                                      await ShowLeadsCubit.get(context)
+                                          .getHomeLeads(
+                                              date: dateItem ?? '',
+                                              source: sourceItem ?? '',
+                                              search: searchCont.text,
+                                              skip: skip -= 20,
+                                              status: statusItem ?? '');
+                                      setState(() {
+                                        skip;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios,
+                                    size: 15,
                                   ),
                                 ),
                               ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Status',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
+                              const SizedBox(
+                                width: 20,
                               ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Phone number',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Last Update',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Follow Date',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Industry',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Region',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Container(
-                                  width: 150,
-                                  height: 50,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0x33E92929),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Action',
-                                      style: StylesData.font12.copyWith(
-                                          color: const Color(0xFFE92929)),
-                                    ),
+                              Opacity(
+                                opacity:
+                                    (state.model.data!.leads!.length + skip !=
+                                            int.parse(state.model.data!.count))
+                                        ? 1
+                                        : .2,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    if (state.model.data!.leads!.length +
+                                            skip !=
+                                        int.parse(state.model.data!.count)) {
+                                      await BlocProvider.of<ShowLeadsCubit>(
+                                              context)
+                                          .getHomeLeads(
+                                              date: dateItem ?? '',
+                                              source: sourceItem ?? '',
+                                              search: searchCont.text,
+                                              skip: skip += 20,
+                                              status: statusItem ?? '');
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 15,
                                   ),
                                 ),
                               ),
                             ],
-                            rows: List<DataRow>.generate(
-                              ((state.model.data?.leads?.length)!),
-                              (index) {
-                                final item = state.model.data?.leads?[index];
-                                return DataRow(
-                                    color: MaterialStateProperty.resolveWith(
-                                        getColor),
-                                    cells: [
-                                      DataCell(
-                                        Center(
-                                          child: InkWell(
-                                            onTap: () {
-                                              editModel = item;
-                                              NavegatorPush(
-                                                context,
-                                                LeedsDetiles(
-                                                    id: int.parse(
-                                                        editModel!.id!)),
-                                              );
-                                            },
-                                            child: SizedBox(
-                                              width: 150,
-                                              child: Text(
-                                                item?.companyName ?? '',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.center,
-                                                style: StylesData.font12
-                                                    .copyWith(
-                                                        color: Colors.black),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: Container(
-                                            width: 83,
-                                            height: 30,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            decoration: ShapeDecoration(
-                                              color: colorHex(
-                                                  item?.leadStatusColor ?? ''),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                item?.leadStatusTitle ?? '',
-                                                style: GoogleFonts.rubik(
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: SizedBox(
-                                            width: 150,
-                                            child: InkWell(
-                                              onTap: (){
-                                                openDialPad(item?.phone ?? '');
-                                              },
-                                              child: Text(
-                                                item?.phone ?? '',
-                                                textAlign: TextAlign.center,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: StylesData.font12.copyWith(
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: SizedBox(
-                                            width: 150,
-                                            child: Text(
-                                              item?.lastUpdate ?? '',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              style: StylesData.font12.copyWith(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: SizedBox(
-                                            width: 150,
-                                            child: Text(
-                                              item?.followDate ?? '',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              style: StylesData.font12.copyWith(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: SizedBox(
-                                            width: 150,
-                                            child: Text(
-                                              item?.industry ?? '',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              style: StylesData.font12.copyWith(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Center(
-                                          child: SizedBox(
-                                            width: 150,
-                                            child: Text(
-                                              item?.region ?? '',
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: StylesData.font12.copyWith(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(Center(
-                                        child: InkWell(
-                                          onTap: () {
-                                            editModel = item;
-                                            NavegatorPush(
-                                              context,
-                                              LeedsDetiles(
-                                                  id: int.parse(
-                                                      editModel!.id!)),
-                                            );
-                                          },
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 22,
-                                                backgroundColor:
-                                                    Colors.grey.withOpacity(.3),
-                                              ),
-                                              const CircleAvatar(
-                                                radius: 21,
-                                                backgroundColor: Colors.white,
-                                                child: Center(
-                                                  child: Image(
-                                                    image: AssetImage(
-                                                      AssetsData.edit2,
-                                                    ),
-                                                    width: 24,
-                                                    height: 24,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                                    ]);
-                              },
-                            ),
                           ),
                         ),
-                      ),
+                      ],
                     );
                   } else if (state is ShowLeadsfailure) {
                     return const FailureWidget();

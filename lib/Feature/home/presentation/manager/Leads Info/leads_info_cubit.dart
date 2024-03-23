@@ -28,4 +28,6 @@ class LeadsInfoCubit extends Cubit<LeadsInfoState> {
       emit(deleteLeadSucc(model));
     });
   }
+
+
 }

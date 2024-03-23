@@ -26,7 +26,6 @@ class NotificationSound {
   }
 
   static Future<void> onMessageOpenedApp(RemoteMessage event) async {
-    
     navigatorKey.currentState?.push(
       MaterialPageRoute(builder: (builder) => const NotificationScreen()),
     );

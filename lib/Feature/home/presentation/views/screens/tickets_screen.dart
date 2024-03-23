@@ -50,8 +50,8 @@ class _TicketsScreenState extends State<TicketsScreen> {
         child: Column(
           children: [
             BlocProvider(
-              create: (context) => AddticketCubit(AddTicketRepoImpl())
-             ..getAllFiled(),
+              create: (context) =>
+                  AddticketCubit(AddTicketRepoImpl())..getAllFiled(),
               child: BlocConsumer<AddticketCubit, AddticketState>(
                 listener: (context, state) {},
                 builder: (context, state) {
@@ -111,12 +111,12 @@ class _TicketsScreenState extends State<TicketsScreen> {
                                     value: typeItem,
 
                                     items: [
-                                       DropdownMenuItem<String>(
+                                      DropdownMenuItem<String>(
                                         value: '',
                                         child: Text(
                                           "Type",
-                                             style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                          style: StylesData.font14
+                                              .copyWith(color: Colors.black),
                                         ),
                                       ),
                                       ...AddticketCubit.get(context)
@@ -127,16 +127,16 @@ class _TicketsScreenState extends State<TicketsScreen> {
                                           value: value.id.toString(),
                                           child: Text(
                                             value.name.toString(),
-                                               style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                            style: StylesData.font14
+                                                .copyWith(color: Colors.black),
                                           ),
                                         );
                                       })
                                     ],
-                                    hint:  Text(
+                                    hint: Text(
                                       "Type",
                                       style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                          .copyWith(color: Colors.black),
                                     ),
                                     onChanged: (value) {
                                       setState(() {
@@ -176,16 +176,16 @@ class _TicketsScreenState extends State<TicketsScreen> {
                                           value: value,
                                           child: Text(
                                             value,
-                                             style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                            style: StylesData.font14
+                                                .copyWith(color: Colors.black),
                                           ),
                                         );
                                       })
                                     ],
-                                    hint:  Text(
+                                    hint: Text(
                                       "status",
                                       style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                          .copyWith(color: Colors.black),
                                     ),
                                     onChanged: (value) {
                                       setState(() {
@@ -230,16 +230,16 @@ class _TicketsScreenState extends State<TicketsScreen> {
                                           value: value.id,
                                           child: Text(
                                             value.text.toString(),
-                                                 style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                            style: StylesData.font14
+                                                .copyWith(color: Colors.black),
                                           ),
                                         );
                                       })
                                     ],
-                                    hint:  Text(
+                                    hint: Text(
                                       "label",
                                       style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                          .copyWith(color: Colors.black),
                                     ),
                                     onChanged: (value) {
                                       setState(() {
@@ -282,16 +282,16 @@ class _TicketsScreenState extends State<TicketsScreen> {
                                           value: value.id.toString(),
                                           child: Text(
                                             value.name.toString(),
-                                               style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                            style: StylesData.font14
+                                                .copyWith(color: Colors.black),
                                           ),
                                         );
                                       })
                                     ],
-                                    hint:  Text(
+                                    hint: Text(
                                       "assgin To",
                                       style: StylesData.font14
-                                        .copyWith(color: Colors.black),
+                                          .copyWith(color: Colors.black),
                                     ),
                                     onChanged: (value) {
                                       setState(() {
@@ -324,13 +324,11 @@ class _TicketsScreenState extends State<TicketsScreen> {
                     return Center(
                       child: Text(state.errorMsq),
                     );
-                  } 
-                  else if (state is GetAllFiledFailuire) {
+                  } else if (state is GetAllFiledFailuire) {
                     return Center(
                       child: Text(state.errorMsq),
                     );
-                  }
-                  else {
+                  } else {
                     return const LinearProgressIndicator();
                   }
                 },
@@ -345,7 +343,8 @@ class _TicketsScreenState extends State<TicketsScreen> {
                   if (state.model.data!.ticket!.isEmpty) {
                     return const Expanded(
                       child: Center(
-                        child: SingleChildScrollView(child: EmptyTicketsWidget()),
+                        child:
+                            SingleChildScrollView(child: EmptyTicketsWidget()),
                       ),
                     );
                   }

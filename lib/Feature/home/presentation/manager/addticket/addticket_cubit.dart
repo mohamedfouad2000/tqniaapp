@@ -156,9 +156,8 @@ class AddticketCubit extends Cubit<AddticketState> {
       getTicketTypes().then((value) {
         getAssginTo().then((value) => {emit(GetAllFiledSucc())});
       });
-    }).catchError(
-        (onError) {
-          emit(GetAllFiledFailuire(errorMsq: 'Opps Error $onError'));
-        });
+    }).catchError((onError) {
+      emit(GetAllFiledFailuire(errorMsq: 'Opps Error $onError'));
+    });
   }
 }

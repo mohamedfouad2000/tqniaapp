@@ -29,5 +29,4 @@ abstract class MettingRepo {
   Future<Either<Failure, Meeting>> getTicketWithId({required int id});
 }
 
-
 //https://system.tqnia.me/index.php/

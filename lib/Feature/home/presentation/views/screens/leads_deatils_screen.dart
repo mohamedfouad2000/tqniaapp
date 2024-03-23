@@ -20,11 +20,9 @@ import 'package:tqniaapp/Feature/home/presentation/views/screens/calles_screen.d
 import 'package:tqniaapp/Feature/home/presentation/views/screens/edit_lead_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/lead_info_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/meeting_lead_screen.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/screens/meeting_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/notes_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/tickets_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/add_calls_form.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/widgets/add_meeting_form.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/add_notes_form.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/add_tickets_form.dart';
 import 'package:tqniaapp/Feature/login/presentation/views/login_view.dart';
@@ -43,14 +41,12 @@ class _LeedsDetilesState extends State<LeedsDetiles>
   int index = 0;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     tabCont!.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabCont = TabController(length: 5, vsync: this);
   }
@@ -120,37 +116,6 @@ class _LeedsDetilesState extends State<LeedsDetiles>
                             ),
                           ),
                         ),
-                        // PopupMenuItem(
-                        //   padding: EdgeInsets.zero,
-                        //   onTap: () {
-                        //     LeadsInfoCubit.get(context)
-                        //         .delateleadById(id: widget.id)
-                        //         .then((value) {});
-                        //   },
-                        //   child: Center(
-                        //     child: Stack(
-                        //       alignment: Alignment.center,
-                        //       children: [
-                        //         CircleAvatar(
-                        //           radius: 29,
-                        //           backgroundColor:
-                        //               const Color(0xFF040415).withOpacity(0.10),
-                        //         ),
-                        //         const CircleAvatar(
-                        //           radius: 26,
-                        //           backgroundColor: Color(0xFFFF0000),
-                        //           child: Center(
-                        //             child: Image(
-                        //               image: AssetImage(AssetsData.newDelete),
-                        //               width: 30.08,
-                        //               height: 30.08,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                       ];
                     },
                     padding: EdgeInsets.zero,

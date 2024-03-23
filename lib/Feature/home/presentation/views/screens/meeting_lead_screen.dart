@@ -14,7 +14,6 @@ import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_sta
 import 'package:tqniaapp/Feature/home/presentation/views/screens/event_view_page.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/screens/show_calander_screen.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/calander_widget.dart';
-import 'package:tqniaapp/Feature/home/presentation/views/widgets/metting_card.dart';
 import 'package:tqniaapp/Feature/home/presentation/views/widgets/month_widget.dart';
 
 class MettingLeadScreen extends StatefulWidget {
@@ -100,7 +99,9 @@ class _MettingLeadScreenState extends State<MettingLeadScreen> {
       create: (context) => MettingsCubit(MettingRepoImp())
         ..getMetting(
             leadid: int.parse(editModel!.id.toString()),
-            start: DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: -90))).toString(),
+            start: DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().add(const Duration(days: -90)))
+                .toString(),
             end: DateFormat('yyyy-MM-dd')
                 .format(DateTime.now().add(const Duration(days: 30)))
                 .toString(),
@@ -120,7 +121,7 @@ class _MettingLeadScreenState extends State<MettingLeadScreen> {
                     InkWell(
                       onTap: () async {
                         print("object");
-                
+
                         NavegatorPush(context, const TableMultiExample());
                       },
                       child: SizedBox(

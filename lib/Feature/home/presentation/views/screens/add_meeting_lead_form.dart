@@ -52,8 +52,8 @@ class _AddMeetingLeadFormState extends State<AddMeetingLeadForm> {
 
   @override
   Widget build(BuildContext context) {
-    print("object is See");
-    
+
+
     return BlocProvider(
       create: (context) => MettingsCubit(MettingRepoImp())..getAllClients(),
       child: BlocConsumer<MettingsCubit, MettingsState>(
@@ -67,7 +67,12 @@ class _AddMeetingLeadFormState extends State<AddMeetingLeadForm> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-            Nav(context, LeedsDetiles(id: int.parse(editModel!.id.toString()),),);
+            Nav(
+              context,
+              LeedsDetiles(
+                id: int.parse(editModel!.id.toString()),
+              ),
+            );
           } else if (state is AddMettingfail) {
             Fluttertoast.showToast(
                 msg: state.errormsq.toString(),
@@ -716,7 +721,7 @@ class _AddMeetingLeadFormState extends State<AddMeetingLeadForm> {
                                       : '#9e9e9e',
                                   location: LocationCont.text,
                                   id: 0,
-                                  leadid:int.parse(editModel!.id.toString()), 
+                                  leadid: int.parse(editModel!.id.toString()),
                                   start_date: Startdate!,
                                   end_time: enddate!,
                                   startTime: StartTime ?? '01:00:00',
@@ -796,8 +801,8 @@ class _AddMeetingLeadFormState extends State<AddMeetingLeadForm> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       StartTime = '${pickedTime.hour}:${pickedTime.minute}';
@@ -874,8 +879,8 @@ class _AddMeetingLeadFormState extends State<AddMeetingLeadForm> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       endTime = '${pickedTime.hour}:${pickedTime.minute}';

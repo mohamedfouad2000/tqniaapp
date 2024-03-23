@@ -21,7 +21,11 @@ class NotificationScreen extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: kbackColor,
               foregroundColor: kbackColor,
+              shadowColor: kbackColor,
+              surfaceTintColor: kbackColor,
               centerTitle: true,
+              
+
               title: Text(
                 "Notifications",
                 style: StylesData.font18.copyWith(color: Colors.black),
@@ -31,7 +35,7 @@ class NotificationScreen extends StatelessWidget {
                   // NotificationCubit.get(context)
                   //     .MakeNotificationRead(id: 0)
                   //     .then((value) {
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                   // });
                 },
                 icon: const Icon(

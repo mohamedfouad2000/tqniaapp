@@ -49,7 +49,6 @@ class AddLeedForm extends StatefulWidget {
 }
 
 class _AddLeedFormState extends State<AddLeedForm> {
-
   String? Source;
   String? status;
   bool isEmpty = false;
@@ -465,7 +464,7 @@ class _AddLeedFormState extends State<AddLeedForm> {
                       const SizedBox(
                         height: 24,
                       ),
-                     Text(
+                      Text(
                         "Region",
                         style: StylesData.font16.copyWith(color: Colors.black),
                       ),
@@ -618,7 +617,6 @@ class _AddLeedFormState extends State<AddLeedForm> {
                                     city: '',
                                     state: widget.StateCont?.text ?? '',
                                     zip: '',
-                      
                                     phone: widget.PhoneCont?.text ?? '',
                                     mobile: widget.MobileCont?.text ?? '',
                                     industry: widget.IndustryCont?.text ?? '',

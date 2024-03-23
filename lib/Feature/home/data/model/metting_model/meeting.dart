@@ -39,50 +39,50 @@ class Meeting {
   dynamic isLead;
   dynamic labelsList;
   String? status;
+  dynamic clientName;
 
-
-  Meeting({
-    this.id,
-    this.title,
-    this.description,
-    this.startDate,
-    this.endDate,
-    this.startTime,
-    this.endTime,
-    this.createdBy,
-    this.location,
-    this.clientId,
-    this.labels,
-    this.shareWith,
-    this.editableGoogleEvent,
-    this.googleEventId,
-    this.deleted,
-    this.leadId,
-    this.ticketId,
-    this.projectId,
-    this.taskId,
-    this.nextRecurringTime,
-    this.noOfCyclesCompleted,
-    this.snoozingTime,
-    this.reminderStatus,
-    this.type,
-    this.color,
-    this.recurring,
-    this.repeatEvery,
-    this.repeatType,
-    this.noOfCycles,
-    this.lastStartDate,
-    this.recurringDates,
-    this.confirmedBy,
-    this.rejectedBy,
-    this.files,
-    this.createdByName,
-    this.createdByAvatar,
-    this.companyName,
-    this.isLead,
-    this.labelsList,
-    this.status
-  });
+  Meeting(
+      {this.id,
+      this.title,
+      this.description,
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.createdBy,
+      this.location,
+      this.clientId,
+      this.labels,
+      this.shareWith,
+      this.editableGoogleEvent,
+      this.googleEventId,
+      this.deleted,
+      this.leadId,
+      this.ticketId,
+      this.projectId,
+      this.taskId,
+      this.nextRecurringTime,
+      this.noOfCyclesCompleted,
+      this.snoozingTime,
+      this.reminderStatus,
+      this.type,
+      this.color,
+      this.recurring,
+      this.repeatEvery,
+      this.repeatType,
+      this.noOfCycles,
+      this.lastStartDate,
+      this.recurringDates,
+      this.confirmedBy,
+      this.rejectedBy,
+      this.files,
+      this.createdByName,
+      this.createdByAvatar,
+      this.companyName,
+      this.isLead,
+      this.labelsList,
+      this.status,
+      this.clientName});
 
   factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
         id: json['id'] as String?,
@@ -124,7 +124,8 @@ class Meeting {
         companyName: json['company_name'] as dynamic,
         isLead: json['is_lead'] as dynamic,
         labelsList: json['labels_list'] as dynamic,
-        status: json['status'] as String?
+        status: json['status'] as String?,
+        clientName: json['client_name'] as dynamic,
       );
 
   Map<String, dynamic> toJson() => {
@@ -167,6 +168,7 @@ class Meeting {
         'company_name': companyName,
         'is_lead': isLead,
         'labels_list': labelsList,
-        'status':status
+        'status': status,
+        'client_name': clientName
       };
 }

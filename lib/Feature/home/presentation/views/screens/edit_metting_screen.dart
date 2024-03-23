@@ -54,7 +54,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
   Future<void> getclient() async {
     String? x = widget.model.shareWith;
     if (x != null) {
-      while (x!.length>1) {
+      while (x!.length > 1) {
         String y = x.split(',').first;
         print(y);
         print(x);
@@ -133,7 +133,7 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
               if (sList.isNotEmpty) {
                 if (!fillList) {
                   fillList = true;
-        
+
                   state.Model.data?.forEach((element) {
                     for (var e in sList) {
                       if (element.id == e.trim()) {
@@ -811,7 +811,8 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                                           : '#9e9e9e',
                                       location: LocationCont.text,
                                       id: int.parse(widget.model.id!),
-                                      leadid: int.parse(widget.model.clientId.toString()),
+                                      leadid: int.parse(
+                                          widget.model.clientId.toString()),
                                       start_date: Startdate!,
                                       end_time: enddate!,
                                       startTime: StartTime ?? '01:00:00',
@@ -894,8 +895,8 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       StartTime = '${pickedTime.hour}:${pickedTime.minute}';
@@ -972,8 +973,8 @@ class _EditMettingScreenState extends State<EditMettingScreen> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       endTime = '${pickedTime.hour}:${pickedTime.minute}';

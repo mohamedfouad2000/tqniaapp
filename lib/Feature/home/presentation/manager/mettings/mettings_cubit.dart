@@ -12,15 +12,15 @@ class MettingsCubit extends Cubit<MettingsState> {
   static MettingsCubit get(context) => BlocProvider.of(context);
   AllClientsModel? model;
   final MettingRepo repo;
-  String ? commonColor;
+  String? commonColor;
   List<Meeting> modelToday = [];
   Future<void> getMetting(
       {required String start,
       required String end,
-       int leadid = 0,
+      int leadid = 0,
       bool isGetDataToday = false}) async {
     emit(GetMettingsLoading());
-    var res = await repo.getMetting(start: start, end: end, leadid : leadid);
+    var res = await repo.getMetting(start: start, end: end, leadid: leadid);
     print(start);
     print(end);
     res.fold((l) {
@@ -41,7 +41,7 @@ class MettingsCubit extends Cubit<MettingsState> {
       {required String title,
       required String description,
       required String labels,
-      int leadid=0,
+      int leadid = 0,
       required String color,
       required String location,
       required int id,
@@ -79,10 +79,7 @@ class MettingsCubit extends Cubit<MettingsState> {
       emit(getAllClientsfail(errormsq: l.msq));
     }, (r) {
       model = r;
-      getCommonColor().then((value) =>{
-  emit(getAllClientsSucc(Model: r))
-      });
-    
+      getCommonColor().then((value) => {emit(getAllClientsSucc(Model: r))});
     });
   }
 
@@ -106,23 +103,20 @@ class MettingsCubit extends Cubit<MettingsState> {
     });
   }
 
-  Future<void> getCommonColor() async{
+  Future<void> getCommonColor() async {
     var res = await repo.getCommonColor();
-    res.fold(
-      (l) => print(l.msq.toString()),
-     (r) => commonColor =r);
+    res.fold((l) => print(l.msq.toString()), (r) => commonColor = r);
   }
 
-  Future<void> getMettingbyId(
-      {required int id}) async {
+  Future<void> getMettingbyId({required int id}) async {
     emit(GetMeetingByIdLoading());
-    var res = await repo.getTicketWithId(id: id,);
+    var res = await repo.getTicketWithId(
+      id: id,
+    );
     res.fold((l) {
       emit(GetMeetingByIdfail(errormsq: l.msq));
     }, (r) {
       emit(GetMeetingByIdSucc(model: r));
     });
   }
-
-
 }

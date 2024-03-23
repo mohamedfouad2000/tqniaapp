@@ -43,6 +43,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
 
   @override
   void initState() {
+    print("object");
+    print('dn is $dn');
+    print('dt $dt');
     for (var i = 0; i < dayesNames.length; i++) {
       if (dt == dayesNames[i]) {
         currentday = i;
@@ -51,39 +54,44 @@ class _MeetingScreenState extends State<MeetingScreen> {
     }
     days = [
       CalanderModel(
-          daytxt: dayesNames[
-              currentday - 3 < 0 ? ((currentday - 3) + 7) : currentday - 3][0],
-          dayNum: int.parse(dn.toString()) - 3,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: -3)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: -3)))),
           isselect: false),
       CalanderModel(
-          daytxt: dayesNames[
-              currentday - 2 < 0 ? ((currentday - 2) + 7) : currentday - 2][0],
-          dayNum: int.parse(dn.toString()) - 2,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: -2)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: -2)))),
           isselect: false),
       CalanderModel(
-          daytxt: dayesNames[
-              currentday - 1 < 0 ? ((currentday - 1) + 7) : currentday - 1][0],
-          dayNum: int.parse(dn.toString()) - 1,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: -1)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: -1)))),
           isselect: false),
       CalanderModel(
-          daytxt: dayesNames[currentday][0],
-          dayNum: int.parse(dn.toString()),
+          daytxt: DateFormat('EEEE').format(DateTime.now())[0],
+          dayNum: int.parse(DateFormat('dd').format(DateTime.now())),
           isselect: true),
       CalanderModel(
-          daytxt: dayesNames[(currentday + 1 > 6
-              ? ((currentday + 1) - 7)
-              : currentday + 1)][0],
-          dayNum: int.parse(dn.toString()) + 1,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: 1)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: 1)))),
           isselect: false),
       CalanderModel(
-          daytxt: dayesNames[
-              currentday + 2 > 6 ? ((currentday + 2) - 7) : currentday + 2][0],
-          dayNum: int.parse(dn.toString()) + 2,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: 2)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: 2)))),
           isselect: false),
       CalanderModel(
-          daytxt: dayesNames[
-              currentday + 3 > 6 ? ((currentday + 3) - 7) : currentday + 3][0],
-          dayNum: int.parse(dn.toString()) + 3,
+          daytxt: DateFormat('EEEE')
+              .format(DateTime.now().add(const Duration(days: 3)))[0],
+          dayNum: int.parse(DateFormat('dd')
+              .format(DateTime.now().add(const Duration(days: 3)))),
           isselect: false),
     ];
 
@@ -96,7 +104,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
     return BlocProvider(
       create: (context) => MettingsCubit(MettingRepoImp())
         ..getMetting(
-            start: DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: -30))).toString(),
+            start: DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().add(const Duration(days: -30)))
+                .toString(),
             end: DateFormat('yyyy-MM-dd')
                 .format(DateTime.now().add(const Duration(days: 30)))
                 .toString(),
@@ -213,7 +223,8 @@ Widget meetingItem({required Meeting model, required context}) => Stack(
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    NavegatorPush(context, EventView(id: int.parse(model.id.toString())));
+                    NavegatorPush(
+                        context, EventView(id: int.parse(model.id.toString())));
                   },
                   child: Container(
                     padding: const EdgeInsets.all(18),

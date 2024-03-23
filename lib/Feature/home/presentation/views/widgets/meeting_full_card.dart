@@ -9,8 +9,10 @@ import 'package:tqniaapp/Core/utils/assets_data.dart';
 import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/utils/styles.dart';
+import 'package:tqniaapp/Core/widgets/custom_loading_widget.dart';
 import 'package:tqniaapp/Core/widgets/faliure_wid.dart';
 import 'package:tqniaapp/Core/widgets/line_wid.dart';
+import 'package:tqniaapp/Core/widgets/loading/metting_loading.dart';
 import 'package:tqniaapp/Feature/home/data/repo/metting%20repo/metting_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/mettings/mettings_state.dart';
@@ -41,6 +43,7 @@ class _MettingFullCardState extends State<MettingFullCard> {
       child: BlocConsumer<MettingsCubit, MettingsState>(
         listener: (context, state) {},
         builder: (context, state) {
+          
           if (state is GetMettingsSucc) {
             if (state.model.data!.meeting!.isEmpty) {
               return const MettingCard();
@@ -280,7 +283,7 @@ class _MettingFullCardState extends State<MettingFullCard> {
           } else if (state is GetMettingsfail) {
             return const FailureWidget();
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const CustomLoadingWidget(child: FullMettingScreen());
           }
         },
       ),

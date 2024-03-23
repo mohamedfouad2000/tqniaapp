@@ -11,7 +11,7 @@ class NoteCubit extends Cubit<NoteState> {
   final AddNoteRepo repo;
   Future<void> getNotes({required String title}) async {
     emit(GetNotesLoading());
-    var res = await repo.getNotes(title :title);
+    var res = await repo.getNotes(title: title);
     res.fold((l) {
       emit(GetNotesFail(l.msq.toString()));
     }, (r) {

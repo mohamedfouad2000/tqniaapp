@@ -65,9 +65,8 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 18.0);
-               
-              
-           Nav(context, const HomeView());
+
+            Nav(context, const HomeView());
           } else if (state is AddMettingfail) {
             Fluttertoast.showToast(
                 msg: state.errormsq.toString(),
@@ -708,7 +707,6 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                               });
                               MettingsCubit.get(context).addMetting(
                                   shareWith: x,
-                                  
                                   title: TittleCont.text,
                                   description: DescriptionCont.text,
                                   labels: labelcont.text,
@@ -796,8 +794,8 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       StartTime = '${pickedTime.hour}:${pickedTime.minute}';
@@ -874,8 +872,8 @@ class _AddMeetingFormState extends State<AddMeetingForm> {
                     var pickedTime = await showTimePicker(
                         context: context, initialTime: TimeOfDay.now());
                     if (pickedTime != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      // String formattedDate =
+                      //     DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(pickedTime);
                       //2024-02-07 09:01:12
                       endTime = '${pickedTime.hour}:${pickedTime.minute}';

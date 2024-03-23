@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tqniaapp/Core/widgets/custom_loading_widget.dart';
+import 'package:tqniaapp/Core/widgets/loading/home_lead_loading.dart';
 
 import 'package:tqniaapp/Feature/home/data/repo/homerepo/home_repos_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/show%20leads/show_leads_cubit.dart';
@@ -28,9 +30,8 @@ class HomeLeads extends StatelessWidget {
               return ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => LeedFullWidget(
-                      model: state.model.data!.leads![
-                          (state.model.data!.leads!.length - 1) - index]),
+                  itemBuilder: (context, index) =>
+                      LeedFullWidget(model: state.model.data!.leads![index]),
                   separatorBuilder: (context, index) => const SizedBox(
                         height: 20,
                       ),
@@ -45,9 +46,7 @@ class HomeLeads extends StatelessWidget {
               child: Text(state.errormsq),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CustomLoadingWidget(child: HomeLeadLoading());
           }
         },
       ),
