@@ -661,6 +661,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+<<<<<<< HEAD
   linkify:
     dependency: transitive
     description:
@@ -669,6 +670,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+=======
+>>>>>>> 0a67570733de94635ff90abcc641f2a8e2bb71ee
   lints:
     dependency: transitive
     description:
