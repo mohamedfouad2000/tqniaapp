@@ -60,7 +60,7 @@ class _ViewAllLeadsListState extends State<ViewAllLeadsList> {
           return index < widget.leads.length
               ? LeedFullWidget(model: widget.leads[index])
               : Builder(builder: (context) {
-                  if (!widget.isEmpty) {
+                  if (!widget.isEmpty && widget.leads.length > 4) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     return Container();

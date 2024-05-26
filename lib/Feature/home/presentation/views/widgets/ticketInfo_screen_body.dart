@@ -7,11 +7,15 @@ import 'package:tqniaapp/Core/utils/colors.dart';
 import 'package:tqniaapp/Core/utils/components.dart';
 import 'package:tqniaapp/Core/widgets/pdf_view_widget.dart';
 // ignore: depend_on_referenced_packages
+import 'package:flutter_linkify/flutter_linkify.dart';
+
 import 'package:tqniaapp/Core/utils/styles.dart';
 import 'package:tqniaapp/Core/widgets/line_wid.dart';
 import 'package:tqniaapp/Feature/home/data/repo/add_ticket_repo/add_ticket_repo_imp.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_cubit.dart';
 import 'package:tqniaapp/Feature/home/presentation/manager/addticket/addticket_state.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class TicketInfoScreenBody extends StatelessWidget {
   const TicketInfoScreenBody({super.key, required this.id});
   final int id;
@@ -111,8 +115,14 @@ class TicketInfoScreenBody extends StatelessWidget {
                         ),
                       ),
                       child: SingleChildScrollView(
-                        child: Text(
-                            state.model.data?.comments?[0].description ?? ''),
+                        child: Linkify(
+                            onOpen: (link) async {
+                              if (!await launchUrl(Uri.parse(link.url))) {
+                                throw Exception('Could not launch ${link.url}');
+                              }
+                            },
+                            text: state.model.data?.comments?[0].description ??
+                                ''),
                       ),
                     ),
                     const SizedBox(
